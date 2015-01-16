@@ -1,7 +1,7 @@
 'use strict';
 var trimRepeated = require('trim-repeated');
-var escapeStringRegexp = require('escape-string-regexp');
 var filenameReservedRegex = require('filename-reserved-regex');
+var stripOuter = require('strip-outer')
 
 // doesn't make sense to have longer filenames
 var MAX_FILENAME_LENGTH = 100;
@@ -23,9 +23,7 @@ module.exports = function (str, opts) {
 
 	if (replacement.length > 0) {
 		str = trimRepeated(str, replacement);
-
-		var escaped = escapeStringRegexp(replacement);
-		str = str.replace(new RegExp('^' + escaped + '|' + escaped + '$', 'g'), '');
+		str = stripOuter(str, replacement);
 	}
 
 	str = str.slice(0, MAX_FILENAME_LENGTH);

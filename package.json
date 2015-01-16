@@ -30,8 +30,8 @@
     "dirname"
   ],
   "dependencies": {
-    "escape-string-regexp": "^1.0.2",
     "filename-reserved-regex": "^1.0.0",
+    "strip-outer": "^1.0.0",
     "trim-repeated": "^1.0.0"
   },
   "devDependencies": {
