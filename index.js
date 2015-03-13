@@ -6,6 +6,8 @@ var stripOuter = require('strip-outer')
 // doesn't make sense to have longer filenames
 var MAX_FILENAME_LENGTH = 100;
 
+var reControlChars = /[\x00-\x1f\x80-\x9f]/g;
+
 module.exports = function (str, opts) {
 	if (typeof str !== 'string') {
 		throw new TypeError('Expected a string');
@@ -15,11 +17,12 @@ module.exports = function (str, opts) {
 
 	var replacement = opts.replacement || '!';
 
-	if (filenameReservedRegex().test(replacement)) {
+	if (filenameReservedRegex().test(replacement) && reControlChars.test(replacementg)) {
 		throw new Error('Replacement string cannot contain reserved filename characters');
 	}
 
 	str = str.replace(filenameReservedRegex(), replacement);
+	str = str.replace(reControlChars, replacement);
 
 	if (replacement.length > 0) {
 		str = trimRepeated(str, replacement);
