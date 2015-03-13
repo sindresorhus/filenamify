@@ -7,6 +7,7 @@ var stripOuter = require('strip-outer')
 var MAX_FILENAME_LENGTH = 100;
 
 var reControlChars = /[\x00-\x1f\x80-\x9f]/g;
+var reRelativePath = /^\.+/;
 
 module.exports = function (str, opts) {
 	if (typeof str !== 'string') {
@@ -23,10 +24,11 @@ module.exports = function (str, opts) {
 
 	str = str.replace(filenameReservedRegex(), replacement);
 	str = str.replace(reControlChars, replacement);
+	str = str.replace(reRelativePath, replacement);
 
 	if (replacement.length > 0) {
 		str = trimRepeated(str, replacement);
-		str = stripOuter(str, replacement);
+		str = str.length > 1 ? stripOuter(str, replacement) : str;
 	}
 
 	str = str.slice(0, MAX_FILENAME_LENGTH);
