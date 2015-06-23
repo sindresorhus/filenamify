@@ -1,7 +1,7 @@
 'use strict';
 var trimRepeated = require('trim-repeated');
 var filenameReservedRegex = require('filename-reserved-regex');
-var stripOuter = require('strip-outer')
+var stripOuter = require('strip-outer');
 
 // doesn't make sense to have longer filenames
 var MAX_FILENAME_LENGTH = 100;
@@ -18,7 +18,7 @@ module.exports = function (str, opts) {
 
 	var replacement = opts.replacement || '!';
 
-	if (filenameReservedRegex().test(replacement) && reControlChars.test(replacementg)) {
+	if (filenameReservedRegex().test(replacement) && reControlChars.test(replacement)) {
 		throw new Error('Replacement string cannot contain reserved filename characters');
 	}
 
