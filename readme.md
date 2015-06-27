@@ -27,14 +27,18 @@ filenamify('foo:"bar"', {replacement: '🐴'});
 
 ## API
 
-### filenamify(input, options)
+### filenamify(input, [options])
+
+Accepts a filename and returns a valid filename.
+
+### filenamify.path(input, [options])
+
+Accepts a path and returns the path with a valid filename.
 
 #### input
 
 *Required*  
 Type: `string`
-
-String you want to use as a filename.
 
 #### options
 
@@ -50,8 +54,8 @@ Cannot contain: `<` `>` `:` `"` `/` `\` `|` `?` `*`
 
 ## Related
 
-- [`filenamify-url`](https://github.com/sindresorhus/filenamify-url) - Convert a URL to a valid filename
-- [`valid-filename`](https://github.com/sindresorhus/valid-filename) - Check if a string is a valid filename
+- [filenamify-url](https://github.com/sindresorhus/filenamify-url) - Convert a URL to a valid filename
+- [valid-filename](https://github.com/sindresorhus/valid-filename) - Check if a string is a valid filename
 
 
 ## License
