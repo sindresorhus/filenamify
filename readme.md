@@ -15,13 +15,13 @@ $ npm install --save filenamify
 ## Usage
 
 ```js
-var filenamify = require('filenamify');
+const filenamify = require('filenamify');
 
 filenamify('<foo/bar>');
-//=> foo!bar
+//=> 'foo!bar'
 
 filenamify('foo:"bar"', {replacement: '🐴'});
-//=> foo🐴bar
+//=> 'foo🐴bar'
 ```
 
 
@@ -37,7 +37,6 @@ Accepts a path and returns the path with a valid filename.
 
 #### input
 
-*Required*  
 Type: `string`
 
 #### options
