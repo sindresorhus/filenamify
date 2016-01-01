@@ -1,24 +1,21 @@
-'use strict';
-var path = require('path');
-var test = require('ava');
-var filenamify = require('./');
+import path from 'path';
+import test from 'ava';
+import m from './';
 
-test('filnamify()', function (t) {
-	t.assert(filenamify('foo/bar') === 'foo!bar');
-	t.assert(filenamify('foo//bar') === 'foo!bar');
-	t.assert(filenamify('//foo//bar//') === 'foo!bar');
-	t.assert(filenamify('foo\\\\\\bar') === 'foo!bar');
-	t.assert(filenamify('foo/bar', {replacement: '🐴🐴'}) === 'foo🐴🐴bar');
-	t.assert(filenamify('////foo////bar////', {replacement: '(('}) === 'foo((bar');
-	t.assert(filenamify('foo\x00bar') === 'foo!bar');
-	t.assert(filenamify('.') === '!');
-	t.assert(filenamify('..') === '!');
-	t.assert(filenamify('./') === '!');
-	t.assert(filenamify('../') === '!');
-	t.end();
+test('filnamify()', t => {
+	t.is(m('foo/bar'), 'foo!bar');
+	t.is(m('foo//bar'), 'foo!bar');
+	t.is(m('//foo//bar//'), 'foo!bar');
+	t.is(m('foo\\\\\\bar'), 'foo!bar');
+	t.is(m('foo/bar', {replacement: '🐴🐴'}), 'foo🐴🐴bar');
+	t.is(m('////foo////bar////', {replacement: '(('}), 'foo((bar');
+	t.is(m('foo\x00bar'), 'foo!bar');
+	t.is(m('.'), '!');
+	t.is(m('..'), '!');
+	t.is(m('./'), '!');
+	t.is(m('../'), '!');
 });
 
-test('filenamify.path()', function (t) {
-	t.assert(path.basename(filenamify.path(path.join(__dirname, 'foo:bar'))) === 'foo!bar');
-	t.end();
+test('filenamify.path()', t => {
+	t.is(path.basename(m.path(path.join(__dirname, 'foo:bar'))), 'foo!bar');
 });
