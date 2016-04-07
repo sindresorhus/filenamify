@@ -1,7 +1,7 @@
 {
   "name": "filenamify",
   "version": "1.2.0",
-  "description": "Convert a string to a valid filename",
+  "description": "Convert a string to a valid safe filename",
   "license": "MIT",
   "repository": "sindresorhus/filenamify",
   "author": {
@@ -13,18 +13,20 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "test": "ava"
+    "test": "xo && ava"
   },
   "files": [
     "index.js"
   ],
   "keywords": [
     "filename",
+    "safe",
+    "sanitize",
     "file",
     "name",
     "string",
-    "str",
     "path",
+    "filepath",
     "convert",
     "valid",
     "dirname"
@@ -35,6 +37,7 @@
     "trim-repeated": "^1.0.0"
   },
   "devDependencies": {
-    "ava": "*"
+    "ava": "*",
+    "xo": "*"
   }
 }

@@ -1,6 +1,6 @@
 # filenamify [![Build Status](https://travis-ci.org/sindresorhus/filenamify.svg?branch=master)](https://travis-ci.org/sindresorhus/filenamify)
 
-> Convert a string to a valid filename
+> Convert a string to a valid safe filename
 
 On Unix-like systems `/` is reserved and [`<>:"/\|?*`](http://msdn.microsoft.com/en-us/library/aa365247%28VS.85%29#naming_conventions) on Windows.
 
@@ -43,7 +43,7 @@ Type: `string`
 
 ##### replacement
 
-Type: `string`  
+Type: `string`<br>
 Default: `'!'`
 
 String to use as replacement for reserved filename characters.
@@ -59,4 +59,4 @@ Cannot contain: `<` `>` `:` `"` `/` `\` `|` `?` `*`
 
 ## License
 
-MIT © [Sindre Sorhus](http://sindresorhus.com)
+MIT © [Sindre Sorhus](https://sindresorhus.com)
