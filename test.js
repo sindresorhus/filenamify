@@ -14,6 +14,11 @@ test('filnamify()', t => {
 	t.is(m('..'), '!');
 	t.is(m('./'), '!');
 	t.is(m('../'), '!');
+	t.is(m('con'), '!');
+	t.is(m('foo/bar/nul'), 'foo!bar!nul');
+	t.is(m('con', {replacement: '🐴🐴'}), '🐴🐴');
+	t.is(m('c/n', {replacement: 'o'}), 'o');
+	t.is(m('c/n', {replacement: 'con'}), 'cconn');
 });
 
 test('filenamify.path()', t => {
