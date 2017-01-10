@@ -33,7 +33,7 @@ var fn = module.exports = function (str, opts) {
 		str = str.length > 1 ? stripOuter(str, replacement) : str;
 	}
 
-	str = str.match(filenameReservedRegex.windowsNames()) ? replacement : str;
+	str = filenameReservedRegex.windowsNames().test(str) ? replacement : str;
 	str = str.slice(0, MAX_FILENAME_LENGTH);
 
 	return str;
