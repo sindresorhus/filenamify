@@ -1,23 +1,23 @@
 'use strict';
-var path = require('path');
-var trimRepeated = require('trim-repeated');
-var filenameReservedRegex = require('filename-reserved-regex');
-var stripOuter = require('strip-outer');
+const path = require('path');
+const trimRepeated = require('trim-repeated');
+const filenameReservedRegex = require('filename-reserved-regex');
+const stripOuter = require('strip-outer');
 
-// doesn't make sense to have longer filenames
-var MAX_FILENAME_LENGTH = 100;
+// Doesn't make sense to have longer filenames
+const MAX_FILENAME_LENGTH = 100;
 
-var reControlChars = /[\x00-\x1f\x80-\x9f]/g; // eslint-disable-line no-control-regex
-var reRelativePath = /^\.+/;
+const reControlChars = /[\x00-\x1f\x80-\x9f]/g; // eslint-disable-line no-control-regex
+const reRelativePath = /^\.+/;
 
-var fn = module.exports = function (str, opts) {
+const fn = module.exports = (str, opts) => {
 	if (typeof str !== 'string') {
 		throw new TypeError('Expected a string');
 	}
 
 	opts = opts || {};
 
-	var replacement = opts.replacement || '!';
+	const replacement = opts.replacement || '!';
 
 	if (filenameReservedRegex().test(replacement) && reControlChars.test(replacement)) {
 		throw new Error('Replacement string cannot contain reserved filename characters');
@@ -38,7 +38,7 @@ var fn = module.exports = function (str, opts) {
 	return str;
 };
 
-fn.path = function (pth, opts) {
+fn.path = (pth, opts) => {
 	pth = path.resolve(pth);
 	return path.join(path.dirname(pth), fn(path.basename(pth), opts));
 };
