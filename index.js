@@ -7,8 +7,7 @@ var stripOuter = require('strip-outer');
 // doesn't make sense to have longer filenames
 var MAX_FILENAME_LENGTH = 100;
 
-/* eslint no-control-regex: "off" */
-var reControlChars = /[\x00-\x1f\x80-\x9f]/g;
+var reControlChars = /[\x00-\x1f\x80-\x9f]/g; // eslint-disable-line no-control-regex
 var reRelativePath = /^\.+/;
 
 var fn = module.exports = function (str, opts) {
