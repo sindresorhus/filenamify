@@ -7,7 +7,7 @@ var stripOuter = require('strip-outer');
 // doesn't make sense to have longer filenames
 var MAX_FILENAME_LENGTH = 100;
 
-var reControlChars = /[\x00-\x1f\x80-\x9f]/g;
+var reControlChars = /[\x00-\x1f\x80-\x9f]/g; // eslint-disable-line no-control-regex
 var reRelativePath = /^\.+/;
 
 var fn = module.exports = function (str, opts) {
@@ -32,6 +32,7 @@ var fn = module.exports = function (str, opts) {
 		str = str.length > 1 ? stripOuter(str, replacement) : str;
 	}
 
+	str = filenameReservedRegex.windowsNames().test(str) ? str + replacement : str;
 	str = str.slice(0, MAX_FILENAME_LENGTH);
 
 	return str;
