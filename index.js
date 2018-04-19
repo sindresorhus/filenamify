@@ -7,38 +7,40 @@ const stripOuter = require('strip-outer');
 // Doesn't make sense to have longer filenames
 const MAX_FILENAME_LENGTH = 100;
 
-const reControlChars = /[\x00-\x1f\x80-\x9f]/g; // eslint-disable-line no-control-regex
+const reControlChars = /[\u0000-\u001f\u0080-\u009f]/g; // eslint-disable-line no-control-regex
 const reRelativePath = /^\.+/;
 
-const fn = module.exports = (str, opts) => {
-	if (typeof str !== 'string') {
+const fn = (string, options) => {
+	if (typeof string !== 'string') {
 		throw new TypeError('Expected a string');
 	}
 
-	opts = opts || {};
+	options = options || {};
 
-	const replacement = opts.replacement || '!';
+	const replacement = options.replacement || '!';
 
 	if (filenameReservedRegex().test(replacement) && reControlChars.test(replacement)) {
 		throw new Error('Replacement string cannot contain reserved filename characters');
 	}
 
-	str = str.replace(filenameReservedRegex(), replacement);
-	str = str.replace(reControlChars, replacement);
-	str = str.replace(reRelativePath, replacement);
+	string = string.replace(filenameReservedRegex(), replacement);
+	string = string.replace(reControlChars, replacement);
+	string = string.replace(reRelativePath, replacement);
 
 	if (replacement.length > 0) {
-		str = trimRepeated(str, replacement);
-		str = str.length > 1 ? stripOuter(str, replacement) : str;
+		string = trimRepeated(string, replacement);
+		string = string.length > 1 ? stripOuter(string, replacement) : string;
 	}
 
-	str = filenameReservedRegex.windowsNames().test(str) ? str + replacement : str;
-	str = str.slice(0, MAX_FILENAME_LENGTH);
+	string = filenameReservedRegex.windowsNames().test(string) ? string + replacement : string;
+	string = string.slice(0, MAX_FILENAME_LENGTH);
 
-	return str;
+	return string;
 };
 
-fn.path = (pth, opts) => {
+fn.path = (pth, options) => {
 	pth = path.resolve(pth);
-	return path.join(path.dirname(pth), fn(path.basename(pth), opts));
+	return path.join(path.dirname(pth), fn(path.basename(pth), options));
 };
+
+module.exports = fn;

@@ -1,6 +1,6 @@
 import path from 'path';
 import test from 'ava';
-import m from './';
+import m from '.';
 
 test('filnamify()', t => {
 	t.is(m('foo/bar'), 'foo!bar');
@@ -9,7 +9,7 @@ test('filnamify()', t => {
 	t.is(m('foo\\\\\\bar'), 'foo!bar');
 	t.is(m('foo/bar', {replacement: '🐴🐴'}), 'foo🐴🐴bar');
 	t.is(m('////foo////bar////', {replacement: '(('}), 'foo((bar');
-	t.is(m('foo\x00bar'), 'foo!bar');
+	t.is(m('foo\u0000bar'), 'foo!bar');
 	t.is(m('.'), '!');
 	t.is(m('..'), '!');
 	t.is(m('./'), '!');

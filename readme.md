@@ -8,7 +8,7 @@ On Unix-like systems `/` is reserved and [`<>:"/\|?*`](http://msdn.microsoft.com
 ## Install
 
 ```
-$ npm install --save filenamify
+$ npm install filenamify
 ```
 
 
