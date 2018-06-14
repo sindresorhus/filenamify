@@ -17,7 +17,7 @@ const fn = (string, options) => {
 
 	options = options || {};
 
-	const replacement = options.replacement || '!';
+	const replacement = opts.replacement === undefined ? '!' : opts.replacement;
 
 	if (filenameReservedRegex().test(replacement) && reControlChars.test(replacement)) {
 		throw new Error('Replacement string cannot contain reserved filename characters');
