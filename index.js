@@ -10,12 +10,10 @@ const MAX_FILENAME_LENGTH = 100;
 const reControlChars = /[\u0000-\u001f\u0080-\u009f]/g; // eslint-disable-line no-control-regex
 const reRelativePath = /^\.+/;
 
-const fn = (string, options) => {
+const fn = (string, options = {}) => {
 	if (typeof string !== 'string') {
 		throw new TypeError('Expected a string');
 	}
-
-	options = options || {};
 
 	const replacement = options.replacement === undefined ? '!' : options.replacement;
 
