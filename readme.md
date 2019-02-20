@@ -53,6 +53,7 @@ Cannot contain: `<` `>` `:` `"` `/` `\` `|` `?` `*`
 
 ## Related
 
+- [filenamify-cli](https://github.com/sindresorhus/filenamify-cli) - CLI for this module
 - [filenamify-url](https://github.com/sindresorhus/filenamify-url) - Convert a URL to a valid filename
 - [valid-filename](https://github.com/sindresorhus/valid-filename) - Check if a string is a valid filename
 - [unused-filename](https://github.com/sindresorhus/unused-filename) - Get a unused filename by appending a number if it exists
