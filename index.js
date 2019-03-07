@@ -10,7 +10,7 @@ const MAX_FILENAME_LENGTH = 100;
 const reControlChars = /[\u0000-\u001f\u0080-\u009f]/g; // eslint-disable-line no-control-regex
 const reRelativePath = /^\.+/;
 
-const fn = (string, options = {}) => {
+const filenamify = (string, options = {}) => {
 	if (typeof string !== 'string') {
 		throw new TypeError('Expected a string');
 	}
@@ -36,9 +36,10 @@ const fn = (string, options = {}) => {
 	return string;
 };
 
-fn.path = (pth, options) => {
+filenamify.path = (pth, options) => {
 	pth = path.resolve(pth);
-	return path.join(path.dirname(pth), fn(path.basename(pth), options));
+	return path.join(path.dirname(pth), filenamify(path.basename(pth), options));
 };
 
-module.exports = fn;
+module.exports = filenamify;
+module.exports.default = filenamify;

@@ -39,6 +39,8 @@ Accepts a path and returns the path with a valid filename.
 
 Type: `string`
 
+A string to convert to a valid filename.
+
 #### options
 
 ##### replacement
