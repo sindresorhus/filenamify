@@ -36,9 +36,9 @@ const filenamify = (string, options = {}) => {
 	return string;
 };
 
-filenamify.path = (pth, options) => {
-	pth = path.resolve(pth);
-	return path.join(path.dirname(pth), filenamify(path.basename(pth), options));
+filenamify.path = (filePath, options) => {
+	filePath = path.resolve(filePath);
+	return path.join(path.dirname(filePath), filenamify(path.basename(filePath), options));
 };
 
 module.exports = filenamify;

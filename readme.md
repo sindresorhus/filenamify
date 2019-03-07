@@ -43,6 +43,8 @@ A string to convert to a valid filename.
 
 #### options
 
+Type: `Object`
+
 ##### replacement
 
 Type: `string`<br>
