@@ -9,22 +9,16 @@ export interface Options {
 	readonly replacement?: string;
 }
 
-/**
- * Accepts a filename and returns a valid filename.
- *
- * @param input - A string to convert to a valid filename.
- */
-export interface Filenamify {
-	(input: string, options?: Options): string;
+declare const filenamify: {
+	/**
+	 * Convert a string to a valid filename.
+	 */
+	(string: string, options?: Options): string;
 
 	/**
-	 * Accepts a path and returns the path with a valid filename.
-	 *
-	 * @param input - A string to convert to a valid path with a filename.
+	 * Convert the filename in a path a valid filename and return the augmented path.
 	 */
-	path(input: string, options?: Options): string;
-}
-
-declare const filenamify: Filenamify;
+	path(path: string, options?: Options): string;
+};
 
 export default filenamify;

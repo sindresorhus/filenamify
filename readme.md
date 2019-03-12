@@ -27,19 +27,13 @@ filenamify('foo:"bar"', {replacement: '🐴'});
 
 ## API
 
-### filenamify(input, [options])
+### filenamify(string, [options])
 
-Accepts a filename and returns a valid filename.
+Convert a string to a valid filename.
 
-### filenamify.path(input, [options])
+### filenamify.path(path, [options])
 
-Accepts a path and returns the path with a valid filename.
-
-#### input
-
-Type: `string`
-
-A string to convert to a valid filename.
+Convert the filename in a path a valid filename and return the augmented path.
 
 #### options
 
