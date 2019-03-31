@@ -32,9 +32,6 @@ declare const filenamify: {
 	Convert the filename in a path a valid filename and return the augmented path.
 	*/
 	path(path: string, options?: filenamify.Options): string;
-
-	// TODO: Remove this for the next major release
-	default: typeof filenamify;
 };
 
 export = filenamify;
