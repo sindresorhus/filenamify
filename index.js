@@ -42,4 +42,5 @@ filenamify.path = (filePath, options) => {
 };
 
 module.exports = filenamify;
+// TODO: Remove this for the next major release
 module.exports.default = filenamify;
