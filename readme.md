@@ -49,6 +49,13 @@ String to use as replacement for reserved filename characters.
 Cannot contain: `<` `>` `:` `"` `/` `\` `|` `?` `*`
 
 
+##### maxFilenameLength
+
+Type: `boolean`<br>
+Default: `100`
+
+quota to limit the output filename length.
+
 ## Related
 
 - [filenamify-cli](https://github.com/sindresorhus/filenamify-cli) - CLI for this module
