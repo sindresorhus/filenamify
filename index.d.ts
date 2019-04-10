@@ -8,6 +8,12 @@ declare namespace filenamify {
 		@default '!'
 		*/
 		readonly replacement?: string;
+		/**
+		quota to limit the output filename length
+
+		@default 100
+		*/
+		readonly maxFilenameLength?: number;
 	}
 }
 
