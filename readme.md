@@ -54,7 +54,8 @@ Cannot contain: `<` `>` `:` `"` `/` `\` `|` `?` `*`
 Type: `boolean`<br>
 Default: `100`
 
-quota to limit the output filename length.
+The filename is truncated to this length.
+
 
 ## Related
 
