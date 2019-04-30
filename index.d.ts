@@ -8,8 +8,9 @@ declare namespace filenamify {
 		@default '!'
 		*/
 		readonly replacement?: string;
+
 		/**
-		quota to limit the output filename length
+		The filename is truncated to this length.
 
 		@default 100
 		*/
