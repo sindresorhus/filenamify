@@ -48,7 +48,6 @@ String to use as replacement for reserved filename characters.
 
 Cannot contain: `<` `>` `:` `"` `/` `\` `|` `?` `*`
 
-
 ##### maxFilenameLength
 
 Type: `boolean`<br>
