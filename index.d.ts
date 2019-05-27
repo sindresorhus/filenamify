@@ -14,7 +14,7 @@ declare namespace filenamify {
 
 		@default 100
 		*/
-		readonly maxFilenameLength?: number;
+		readonly maxLength?: number;
 	}
 }
 
