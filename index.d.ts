@@ -8,6 +8,15 @@ declare namespace filenamify {
 		@default '!'
 		*/
 		readonly replacement?: string;
+
+		/**
+		Truncate the filename to the given length.
+		
+		Systems generally allow up to 255 characters, but we default to 100 for usability reasons.
+
+		@default 100
+		*/
+		readonly maxLength?: number;
 	}
 }
 

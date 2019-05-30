@@ -48,6 +48,15 @@ String to use as replacement for reserved filename characters.
 
 Cannot contain: `<` `>` `:` `"` `/` `\` `|` `?` `*`
 
+##### maxLength
+
+Type: `boolean`<br>
+Default: `100`
+
+Truncate the filename to the given length.
+		
+Systems generally allow up to 255 characters, but we default to 100 for usability reasons.
+
 
 ## Related
 

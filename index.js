@@ -31,7 +31,7 @@ const filenamify = (string, options = {}) => {
 	}
 
 	string = filenameReservedRegex.windowsNames().test(string) ? string + replacement : string;
-	string = string.slice(0, MAX_FILENAME_LENGTH);
+	string = string.slice(0, typeof options.maxLength === 'number' ? options.maxLength : MAX_FILENAME_LENGTH);
 
 	return string;
 };
