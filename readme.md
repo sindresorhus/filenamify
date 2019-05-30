@@ -53,7 +53,9 @@ Cannot contain: `<` `>` `:` `"` `/` `\` `|` `?` `*`
 Type: `boolean`<br>
 Default: `100`
 
-The filename is truncated to this length.
+Truncate the filename to the given length.
+		
+Systems generally allow up to 255 characters, but we default to 100 for usability reasons.
 
 
 ## Related
