@@ -5,6 +5,8 @@ const filenameReservedRegex = require('filename-reserved-regex');
 // Doesn't make sense to have longer filenames
 const MAX_FILENAME_LENGTH = 100;
 
+const reRepeatedReservedChars = /([<>:"/\\|?*\x00-\x1F]){2,}/g; // eslint-disable-line no-control-regex, unicorn/no-hex-escape
+const reOuterReservedChars = /^[<>:"/\\|?*\x00-\x1F]|[<>:"/\\|?*\x00-\x1F]$/g; // eslint-disable-line no-control-regex, unicorn/no-hex-escape
 const reControlChars = /[\u0000-\u001f\u0080-\u009f]/g; // eslint-disable-line no-control-regex
 const reRelativePath = /^\.+/;
 
@@ -39,8 +41,8 @@ filenamify.path = (filePath, options) => {
 	return path.join(path.dirname(filePath), filenamify(path.basename(filePath), options));
 };
 
-const trimRepeatedReservedChars = str => str.replace(/([<>:"/\\|?*\x00-\x1F]){2,}/g, '$1'); // eslint-disable-line no-control-regex, unicorn/no-hex-escape
+const trimRepeatedReservedChars = str => str.replace(reRepeatedReservedChars, '$1');
 
-const stripOuterReservedChars = str => str.replace(/^[<>:"/\\|?*\x00-\x1F]|[<>:"/\\|?*\x00-\x1F]$/g, ''); // eslint-disable-line no-control-regex, unicorn/no-hex-escape
+const stripOuterReservedChars = str => str.replace(reOuterReservedChars, '');
 
 module.exports = filenamify;
