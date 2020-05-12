@@ -50,7 +50,7 @@ Cannot contain: `<` `>` `:` `"` `/` `\` `|` `?` `*`
 
 ##### maxLength
 
-Type: `boolean`<br>
+Type: `number`<br>
 Default: `100`
 
 Truncate the filename to the given length.
