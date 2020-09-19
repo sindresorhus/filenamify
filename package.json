@@ -19,6 +19,11 @@
 		"index.js",
 		"index.d.ts"
 	],
+	"exports": {
+		".": "./index.js",
+		"./filenamify": "./filenamify.js",
+		"./filenamify-path": "./filenamify-path.js"
+	},
 	"keywords": [
 		"filename",
 		"safe",
