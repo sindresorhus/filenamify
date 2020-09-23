@@ -57,6 +57,18 @@ Truncate the filename to the given length.
 		
 Systems generally allow up to 255 characters, but we default to 100 for usability reasons.
 
+## Browser-only import
+
+You can also import `filenamify/browser`, which only imports `filenamify` and not `filenamify.path`, which relies on `path` being available or polyfilled.
+Importing `filenamify` this way is therefore useful when it is shipped using `webpack` or similar tools, and if `filenamify.path` is not needed.
+
+```js
+const filenamify = require('filenamify/browser');
+
+filenamify('<foo/bar>');
+//=> 'foo!bar'
+```
+
 
 ## Related
 
