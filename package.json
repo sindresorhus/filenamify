@@ -21,8 +21,7 @@
 	],
 	"exports": {
 		".": "./index.js",
-		"./filenamify": "./filenamify.js",
-		"./filenamify-path": "./filenamify-path.js"
+		"./browser": "./filenamify.js"
 	},
 	"keywords": [
 		"filename",
