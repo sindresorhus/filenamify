@@ -16,8 +16,12 @@
 		"test": "xo && ava && tsd"
 	},
 	"files": [
-		"index.js",
-		"index.d.ts"
+		"filenamify-path.d.ts",
+		"filenamify-path.js",
+		"filenamify.d.ts",
+		"filenamify.js",
+		"index.d.ts",
+		"index.js"
 	],
 	"exports": {
 		".": "./index.js",
