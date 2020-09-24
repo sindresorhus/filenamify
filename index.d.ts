@@ -1,7 +1,7 @@
 import filenamify = require('./filenamify');
 import filenamifyPath = require('./filenamify-path');
 
-declare const filenamifyCombined: { 
+declare const filenamifyCombined: {
 	/**
 	Convert a string to a valid filename.
 

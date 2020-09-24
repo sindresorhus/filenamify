@@ -1,16 +1,14 @@
-# filenamify [![Build Status](https://travis-ci.org/sindresorhus/filenamify.svg?branch=master)](https://travis-ci.org/sindresorhus/filenamify)
+# filenamify [![Build Status](https://travis-ci.com/sindresorhus/filenamify.svg?branch=master)](https://travis-ci.com/github/sindresorhus/filenamify)
 
 > Convert a string to a valid safe filename
 
 On Unix-like systems `/` is reserved and [`<>:"/\|?*`](http://msdn.microsoft.com/en-us/library/aa365247%28VS.85%29#naming_conventions) on Windows.
-
 
 ## Install
 
 ```
 $ npm install filenamify
 ```
-
 
 ## Usage
 
@@ -24,24 +22,23 @@ filenamify('foo:"bar"', {replacement: '🐴'});
 //=> 'foo🐴bar'
 ```
 
-
 ## API
 
-### filenamify(string, [options])
+### filenamify(string, options?)
 
 Convert a string to a valid filename.
 
-### filenamify.path(path, [options])
+### filenamify.path(path, options?)
 
 Convert the filename in a path a valid filename and return the augmented path.
 
 #### options
 
-Type: `Object`
+Type: `object`
 
 ##### replacement
 
-Type: `string`<br>
+Type: `string`\
 Default: `'!'`
 
 String to use as replacement for reserved filename characters.
@@ -50,11 +47,11 @@ Cannot contain: `<` `>` `:` `"` `/` `\` `|` `?` `*`
 
 ##### maxLength
 
-Type: `number`<br>
+Type: `number`\
 Default: `100`
 
 Truncate the filename to the given length.
-		
+
 Systems generally allow up to 255 characters, but we default to 100 for usability reasons.
 
 ## Browser-only import
@@ -68,7 +65,6 @@ filenamify('<foo/bar>');
 //=> 'foo!bar'
 ```
 
-
 ## Related
 
 - [filenamify-cli](https://github.com/sindresorhus/filenamify-cli) - CLI for this module
@@ -76,8 +72,3 @@ filenamify('<foo/bar>');
 - [valid-filename](https://github.com/sindresorhus/valid-filename) - Check if a string is a valid filename
 - [unused-filename](https://github.com/sindresorhus/unused-filename) - Get a unused filename by appending a number if it exists
 - [slugify](https://github.com/sindresorhus/slugify) - Slugify a string
-
-
-## License
-
-MIT © [Sindre Sorhus](https://sindresorhus.com)
