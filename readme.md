@@ -20,6 +20,9 @@ filenamify('<foo/bar>');
 
 filenamify('foo:"bar"', {replacement: '🐴'});
 //=> 'foo🐴bar'
+
+filenamify('/foo/to/bar---file.txt"', {replacement: '-', condenseReplacements: true});
+//=> 'foo-to-bar---file.txt'
 ```
 
 ## API
