@@ -39,11 +39,11 @@ filenamify('<foo/bar>');
 
 filenamify('foo:"bar"', {replacement: '🐴'});
 //=> 'foo🐴bar'
+
+filenamify('/path/to/file---name.ext"', {replacement: '-', condenseReplacements: true});
+//=> 'path-to-file---name.ext'
 ```
 */
-declare const filenamify: (
-	string: string,
-	options?: filenamify.Options
-) => string;
+declare const filenamify: (string: string, options?: filenamify.Options) => string;
 
 export = filenamify;
