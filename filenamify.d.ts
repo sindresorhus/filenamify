@@ -17,6 +17,13 @@ declare namespace filenamify {
 		@default 100
 		*/
 		readonly maxLength?: number;
+
+		/**
+		Preserve the repeated replacements of a given string.
+
+		@default false
+		*/
+		readonly condenseReplacements?: boolean;
 	}
 }
 
@@ -34,6 +41,9 @@ filenamify('foo:"bar"', {replacement: '🐴'});
 //=> 'foo🐴bar'
 ```
 */
-declare const filenamify: (string: string, options?: filenamify.Options) => string;
+declare const filenamify: (
+	string: string,
+	options?: filenamify.Options
+) => string;
 
 export = filenamify;

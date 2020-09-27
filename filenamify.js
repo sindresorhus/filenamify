@@ -15,6 +15,7 @@ const filenamify = (string, options = {}) => {
 	}
 
 	const replacement = options.replacement === undefined ? '!' : options.replacement;
+	const condenseReplacements = options.condenseReplacements === undefined ? false : options.condenseReplacements;
 
 	if (filenameReservedRegex().test(replacement) && reControlChars.test(replacement)) {
 		throw new Error('Replacement string cannot contain reserved filename characters');
@@ -25,7 +26,10 @@ const filenamify = (string, options = {}) => {
 	string = string.replace(reRelativePath, replacement);
 
 	if (replacement.length > 0) {
-		string = trimRepeated(string, replacement);
+		if (!condenseReplacements) {
+			string = trimRepeated(string, replacement);
+		}
+
 		string = string.length > 1 ? stripOuter(string, replacement) : string;
 	}
 
