@@ -45,6 +45,13 @@ String to use as replacement for reserved filename characters.
 
 Cannot contain: `<` `>` `:` `"` `/` `\` `|` `?` `*`
 
+### condenseReplacements
+
+Type: `boolean`\
+Default: `false`
+
+Preserves the repeated replacements of a given string.
+
 ##### maxLength
 
 Type: `number`\
