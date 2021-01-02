@@ -1,4 +1,4 @@
-# filenamify [![Build Status](https://travis-ci.com/sindresorhus/filenamify.svg?branch=master)](https://travis-ci.com/github/sindresorhus/filenamify)
+# filenamify
 
 > Convert a string to a valid safe filename
 
