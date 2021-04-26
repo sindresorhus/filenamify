@@ -14,6 +14,9 @@ test('filnamify()', t => {
 	t.is(filenamify('..'), '!');
 	t.is(filenamify('./'), '!');
 	t.is(filenamify('../'), '!');
+	t.is(filenamify('foo.bar.'), 'foo.bar');
+	t.is(filenamify('foo.bar..'), 'foo.bar');
+	t.is(filenamify('foo.bar...'), 'foo.bar');
 	t.is(filenamify('con'), 'con!');
 	t.is(filenamify('foo/bar/nul'), 'foo!bar!nul');
 	t.is(filenamify('con', {replacement: '🐴🐴'}), 'con🐴🐴');

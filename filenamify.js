@@ -8,6 +8,7 @@ const MAX_FILENAME_LENGTH = 100;
 
 const reControlChars = /[\u0000-\u001f\u0080-\u009f]/g; // eslint-disable-line no-control-regex
 const reRelativePath = /^\.+/;
+const reTrailingPeriods = /\.+$/;
 
 const filenamify = (string, options = {}) => {
 	if (typeof string !== 'string') {
@@ -23,6 +24,7 @@ const filenamify = (string, options = {}) => {
 	string = string.replace(filenameReservedRegex(), replacement);
 	string = string.replace(reControlChars, replacement);
 	string = string.replace(reRelativePath, replacement);
+	string = string.replace(reTrailingPeriods, '');
 
 	if (replacement.length > 0) {
 		string = trimRepeated(string, replacement);
