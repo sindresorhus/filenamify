@@ -2,7 +2,7 @@
 
 > Convert a string to a valid safe filename
 
-On Unix-like systems `/` is reserved and [`<>:"/\|?*`](http://msdn.microsoft.com/en-us/library/aa365247%28VS.85%29#naming_conventions) on Windows.
+On Unix-like systems `/` is reserved. On Windows, [`<>:"/\|?*`](http://msdn.microsoft.com/en-us/library/aa365247%28VS.85%29#naming_conventions) along with trailing periods are reserved.
 
 ## Install
 
