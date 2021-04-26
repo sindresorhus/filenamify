@@ -22,6 +22,11 @@ test('filnamify()', t => {
 	t.is(filenamify('con', {replacement: '🐴🐴'}), 'con🐴🐴');
 	t.is(filenamify('c/n', {replacement: 'o'}), 'cono');
 	t.is(filenamify('c/n', {replacement: 'con'}), 'cconn');
+	t.is(filenamify('!!!!!'), '!!!!!');
+	t.is(filenamify('/!!///!!!!/////'), '!!!!!!!');
+	t.is(filenamify('!!!!!//', {replacement: '!!'}), '!!!!!');
+	t.is(filenamify('foofoo//', {replacement: 'foo'}), 'foofoo');
+	t.is(filenamify('foofoo/foo/', {replacement: 'foo'}), 'foofoofoofoo');
 });
 
 test('filenamify.path()', t => {
