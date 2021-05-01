@@ -28,13 +28,16 @@ const filenamify = (string, options = {}) => {
 			let filenamified = '';
 			if (substring.length > 0) {
 				filenamified = filenamify(substring, options);
-				if (filenamified.length === 0 && !(substringIndex === substrings.length - 1 || substringIndex === 0)) {
+				if (substringIndex === substrings.length - 1 || substringIndex === 0) {
+					filenamified = stripOuter(filenamified, replacement);
+				} else if (filenamified.length === 0) {
 					filenamified = replacement;
 				}
 			}
 
 			tmp.push(filenamified);
 		});
+
 		return tmp.join(replacement);
 	}
 
