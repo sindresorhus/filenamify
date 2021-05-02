@@ -22,23 +22,7 @@ const filenamify = (string, options = {}) => {
 	}
 
 	if (string.includes(replacement)) {
-		const substrings = string.split(replacement);
-		const tmp = [];
-		substrings.forEach((substring, substringIndex) => {
-			let filenamified = '';
-			if (substring.length > 0) {
-				filenamified = filenamify(substring, options);
-				if (substringIndex === substrings.length - 1 || substringIndex === 0) {
-					filenamified = stripOuter(filenamified, replacement);
-				} else if (filenamified.length === 0) {
-					filenamified = replacement;
-				}
-			}
-
-			tmp.push(filenamified);
-		});
-
-		return tmp.join(replacement);
+		return recursivelyFilenamify(string, options);
 	}
 
 	string = string.replace(filenameReservedRegex(), replacement);
@@ -55,6 +39,28 @@ const filenamify = (string, options = {}) => {
 	string = string.slice(0, typeof options.maxLength === 'number' ? options.maxLength : MAX_FILENAME_LENGTH);
 
 	return string;
+};
+
+const recursivelyFilenamify = (string, options = {}) => {
+	const replacement = options.replacement === undefined ? '!' : options.replacement;
+	const substrings = string.split(replacement);
+	const tmp = [];
+	for (let substringIndex = 0; substringIndex < substrings.length; substringIndex++) {
+		const substring = substrings[substringIndex];
+		let filenamified = '';
+		if (substring.length > 0) {
+			filenamified = filenamify(substring, options);
+			if (substringIndex === substrings.length - 1 || substringIndex === 0) {
+				filenamified = stripOuter(filenamified, replacement);
+			} else if (filenamified.length === 0) {
+				filenamified = replacement;
+			}
+		}
+
+		tmp.push(filenamified);
+	}
+
+	return tmp.join(replacement);
 };
 
 module.exports = filenamify;
