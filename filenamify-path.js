@@ -1,10 +1,7 @@
-'use strict';
-const path = require('path');
-const filenamify = require('./filenamify');
+import path from 'node:path';
+import filenamify from './filenamify.js';
 
-const filenamifyPath = (filePath, options) => {
+export default function filenamifyPath(filePath, options) {
 	filePath = path.resolve(filePath);
 	return path.join(path.dirname(filePath), filenamify(path.basename(filePath), options));
-};
-
-module.exports = filenamifyPath;
+}

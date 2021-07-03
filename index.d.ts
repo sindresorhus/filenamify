@@ -1,24 +1,8 @@
-import filenamify = require('./filenamify');
-import filenamifyPath = require('./filenamify-path');
+import filenamify from './filenamify.js';
+import filenamifyPath from './filenamify-path.js';
 
-declare const filenamifyCombined: {
-	/**
-	Convert a string to a valid filename.
+export default filenamify;
 
-	@example
-	```
-	import filenamify = require('filenamify');
-
-	filenamify('<foo/bar>');
-	//=> 'foo!bar'
-
-	filenamify('foo:"bar"', {replacement: '🐴'});
-	//=> 'foo🐴bar'
-	```
-	*/
-	(string: string, options?: filenamify.Options): string;
-
-	path: typeof filenamifyPath;
+export {
+	filenamifyPath
 };
-
-export = filenamifyCombined;

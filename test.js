@@ -1,6 +1,7 @@
-import path from 'path';
 import test from 'ava';
-import filenamify from '.';
+import path from 'node:path';
+import {dirname} from 'dirname-filename-esm';
+import filenamify, {filenamifyPath} from './index.js';
 
 test('filnamify()', t => {
 	t.is(filenamify('foo/bar'), 'foo!bar');
@@ -24,8 +25,8 @@ test('filnamify()', t => {
 	t.is(filenamify('c/n', {replacement: 'con'}), 'cconn');
 });
 
-test('filenamify.path()', t => {
-	t.is(path.basename(filenamify.path(path.join(__dirname, 'foo:bar'))), 'foo!bar');
+test('filenamifyPath()', t => {
+	t.is(path.basename(filenamifyPath(path.join(dirname(import.meta), 'foo:bar'))), 'foo!bar');
 });
 
 test('filenamify length', t => {

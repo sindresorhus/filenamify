@@ -1,8 +1,6 @@
-import filenamify = require('./filenamify');
+import {Options} from './filenamify.js';
 
 /**
 Convert the filename in a path a valid filename and return the augmented path.
 */
-declare const filenamifyPath: (path: string, options?: filenamify.Options) => string;
-
-export = filenamifyPath;
+export default function filenamifyPath(path: string, options?: Options): string;

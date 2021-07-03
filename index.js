@@ -1,8 +1,8 @@
-'use strict';
-const filenamify = require('./filenamify');
-const filenamifyPath = require('./filenamify-path');
+import filenamify from './filenamify.js';
+import filenamifyPath from './filenamify-path.js';
 
-const filenamifyCombined = filenamify;
-filenamifyCombined.path = filenamifyPath;
+export default filenamify;
 
-module.exports = filenamify;
+export {
+	filenamifyPath
+};
