@@ -10,10 +10,14 @@
 		"email": "sindresorhus@gmail.com",
 		"url": "https://sindresorhus.com"
 	},
+	"type": "module",
+	"exports": {
+		".": "./index.js",
+		"./browser": "./filenamify.js"
+	},
 	"engines": {
 		"node": ">=12.20"
 	},
-	"type": "module",
 	"scripts": {
 		"test": "xo && ava && tsd"
 	},
@@ -25,10 +29,6 @@
 		"index.d.ts",
 		"index.js"
 	],
-	"exports": {
-		".": "./index.js",
-		"./browser": "./filenamify.js"
-	},
 	"keywords": [
 		"filename",
 		"safe",
