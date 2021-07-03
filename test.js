@@ -1,5 +1,5 @@
-import test from 'ava';
 import path from 'node:path';
+import test from 'ava';
 import {dirname} from 'dirname-filename-esm';
 import filenamify, {filenamifyPath} from './index.js';
 
