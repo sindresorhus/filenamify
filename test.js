@@ -1,7 +1,9 @@
 import path from 'node:path';
+import {fileURLToPath} from 'node:url';
 import test from 'ava';
-import {dirname} from 'dirname-filename-esm';
 import filenamify, {filenamifyPath} from './index.js';
+
+const directoryName = dirname(fileURLToPath(import.meta.url));
 
 test('filnamify()', t => {
 	t.is(filenamify('foo/bar'), 'foo!bar');
@@ -26,7 +28,7 @@ test('filnamify()', t => {
 });
 
 test('filenamifyPath()', t => {
-	t.is(path.basename(filenamifyPath(path.join(dirname(import.meta), 'foo:bar'))), 'foo!bar');
+	t.is(path.basename(filenamifyPath(path.join(directoryName, 'foo:bar'))), 'foo!bar');
 });
 
 test('filenamify length', t => {
