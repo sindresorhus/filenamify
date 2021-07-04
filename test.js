@@ -3,7 +3,7 @@ import {fileURLToPath} from 'node:url';
 import test from 'ava';
 import filenamify, {filenamifyPath} from './index.js';
 
-const directoryName = dirname(fileURLToPath(import.meta.url));
+const directoryName = path.dirname(fileURLToPath(import.meta.url));
 
 test('filnamify()', t => {
 	t.is(filenamify('foo/bar'), 'foo!bar');
