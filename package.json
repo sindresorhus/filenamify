@@ -10,8 +10,13 @@
 		"email": "sindresorhus@gmail.com",
 		"url": "https://sindresorhus.com"
 	},
+	"type": "module",
+	"exports": {
+		".": "./index.js",
+		"./browser": "./filenamify.js"
+	},
 	"engines": {
-		"node": ">=8"
+		"node": ">=12.20"
 	},
 	"scripts": {
 		"test": "xo && ava && tsd"
@@ -24,10 +29,6 @@
 		"index.d.ts",
 		"index.js"
 	],
-	"exports": {
-		".": "./index.js",
-		"./browser": "./filenamify.js"
-	},
 	"keywords": [
 		"filename",
 		"safe",
@@ -47,8 +48,8 @@
 		"trim-repeated": "^1.0.0"
 	},
 	"devDependencies": {
-		"ava": "^1.4.1",
-		"tsd": "^0.7.1",
-		"xo": "^0.24.0"
+		"ava": "^3.15.0",
+		"tsd": "^0.17.0",
+		"xo": "^0.40.3"
 	}
 }

@@ -1,16 +1,15 @@
-'use strict';
-const trimRepeated = require('trim-repeated');
-const filenameReservedRegex = require('filename-reserved-regex');
-const stripOuter = require('strip-outer');
+import trimRepeated from 'trim-repeated';
+import filenameReservedRegex from 'filename-reserved-regex';
+import stripOuter from 'strip-outer';
 
 // Doesn't make sense to have longer filenames
 const MAX_FILENAME_LENGTH = 100;
 
-const reControlChars = /[\u0000-\u001f\u0080-\u009f]/g; // eslint-disable-line no-control-regex
+const reControlChars = /[\u0000-\u001F\u0080-\u009F]/g; // eslint-disable-line no-control-regex
 const reRelativePath = /^\.+/;
 const reTrailingPeriods = /\.+$/;
 
-const filenamify = (string, options = {}) => {
+export default function filenamify(string, options = {}) {
 	if (typeof string !== 'string') {
 		throw new TypeError('Expected a string');
 	}
@@ -35,6 +34,4 @@ const filenamify = (string, options = {}) => {
 	string = string.slice(0, typeof options.maxLength === 'number' ? options.maxLength : MAX_FILENAME_LENGTH);
 
 	return string;
-};
-
-module.exports = filenamify;
+}

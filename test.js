@@ -1,6 +1,9 @@
-import path from 'path';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
 import test from 'ava';
-import filenamify from '.';
+import filenamify, {filenamifyPath} from './index.js';
+
+const directoryName = path.dirname(fileURLToPath(import.meta.url));
 
 test('filnamify()', t => {
 	t.is(filenamify('foo/bar'), 'foo!bar');
@@ -24,8 +27,8 @@ test('filnamify()', t => {
 	t.is(filenamify('c/n', {replacement: 'con'}), 'cconn');
 });
 
-test('filenamify.path()', t => {
-	t.is(path.basename(filenamify.path(path.join(__dirname, 'foo:bar'))), 'foo!bar');
+test('filenamifyPath()', t => {
+	t.is(path.basename(filenamifyPath(path.join(directoryName, 'foo:bar'))), 'foo!bar');
 });
 
 test('filenamify length', t => {
