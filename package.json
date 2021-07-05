@@ -1,6 +1,6 @@
 {
 	"name": "filenamify",
-	"version": "4.3.0",
+	"version": "5.0.0",
 	"description": "Convert a string to a valid safe filename",
 	"license": "MIT",
 	"repository": "sindresorhus/filenamify",
