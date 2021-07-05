@@ -1,8 +1,2 @@
-import filenamify from './filenamify.js';
-import filenamifyPath from './filenamify-path.js';
-
-export default filenamify;
-
-export {
-	filenamifyPath
-};
+export {default} from './filenamify.js';
+export {default as filenamifyPath} from './filenamify-path.js';
