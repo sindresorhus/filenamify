@@ -32,6 +32,13 @@ Convert a string to a valid filename.
 
 Convert the filename in a path a valid filename and return the augmented path.
 
+```js
+import {filenamifyPath} from 'filenamify';
+
+filenamifyPath('foo:bar');
+//=> 'foo!bar'
+```
+
 #### options
 
 Type: `object`
