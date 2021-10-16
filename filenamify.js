@@ -32,7 +32,7 @@ export default function filenamify(string, options = {}) {
 
 	string = filenameReservedRegex.windowsNames().test(string) ? string + replacement : string;
 	const allowedLength = typeof options.maxLength === 'number' ? options.maxLength : MAX_FILENAME_LENGTH;
-	if (allowedLength < string.length) {
+	if (string.length > allowedLength) {
 		const extensionIndex = string.lastIndexOf('.');
 		string = string.slice(0, Math.min(allowedLength, extensionIndex)) + string.slice(extensionIndex);
 	}
