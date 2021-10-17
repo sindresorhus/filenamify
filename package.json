@@ -43,13 +43,13 @@
 		"dirname"
 	],
 	"dependencies": {
-		"filename-reserved-regex": "^2.0.0",
-		"strip-outer": "^1.0.1",
-		"trim-repeated": "^1.0.0"
+		"filename-reserved-regex": "^3.0.0",
+		"strip-outer": "^2.0.0",
+		"trim-repeated": "^2.0.0"
 	},
 	"devDependencies": {
 		"ava": "^3.15.0",
-		"tsd": "^0.17.0",
-		"xo": "^0.40.3"
+		"tsd": "^0.18.0",
+		"xo": "^0.45.0"
 	}
 }

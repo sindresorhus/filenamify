@@ -1,5 +1,5 @@
 import trimRepeated from 'trim-repeated';
-import filenameReservedRegex from 'filename-reserved-regex';
+import filenameReservedRegex, {windowsReservedNameRegex} from 'filename-reserved-regex';
 import stripOuter from 'strip-outer';
 
 // Doesn't make sense to have longer filenames
@@ -30,7 +30,7 @@ export default function filenamify(string, options = {}) {
 		string = string.length > 1 ? stripOuter(string, replacement) : string;
 	}
 
-	string = filenameReservedRegex.windowsNames().test(string) ? string + replacement : string;
+	string = windowsReservedNameRegex().test(string) ? string + replacement : string;
 	const allowedLength = typeof options.maxLength === 'number' ? options.maxLength : MAX_FILENAME_LENGTH;
 	if (string.length > allowedLength) {
 		const extensionIndex = string.lastIndexOf('.');

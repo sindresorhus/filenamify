@@ -6,8 +6,8 @@ On Unix-like systems, `/` is reserved. On Windows, [`<>:"/\|?*`](http://msdn.mic
 
 ## Install
 
-```
-$ npm install filenamify
+```sh
+npm install filenamify
 ```
 
 ## Usage
@@ -63,7 +63,7 @@ Systems generally allow up to 255 characters, but we default to 100 for usabilit
 
 ## Browser-only import
 
-You can also import `filenamify/browser`, which only imports `filenamify` and not `filenamify.path`, which relies on `path` being available or polyfilled. Importing `filenamify` this way is therefore useful when it is shipped using `webpack` or similar tools, and if `filenamify.path` is not needed.
+You can also import `filenamify/browser`, which only imports `filenamify` and not `filenamifyPath`, which relies on `path` being available or polyfilled. Importing `filenamify` this way is therefore useful when it is shipped using `webpack` or similar tools, and if `filenamifyPath` is not needed.
 
 ```js
 import filenamify from 'filenamify/browser';
