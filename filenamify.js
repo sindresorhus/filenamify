@@ -20,6 +20,7 @@ export default function filenamify(string, options = {}) {
 		throw new Error('Replacement string cannot contain reserved filename characters');
 	}
 
+	string = string.normalize('NFD');
 	string = string.replace(filenameReservedRegex(), replacement);
 	string = string.replace(reControlChars, replacement);
 	string = string.replace(reRelativePath, replacement);
