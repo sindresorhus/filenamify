@@ -59,6 +59,8 @@ Default: `100`
 
 Truncate the filename to the given length.
 
+Only filename is truncated, preserving the extension. If the extension itself is longer than `maxLength`, you'll get a string that is longer than requested, so you need to check for that.
+
 Systems generally allow up to 255 characters, but we default to 100 for usability reasons.
 
 ## Browser-only import

@@ -30,14 +30,17 @@ test('filnamify()', t => {
 test('filenamifyPath()', t => {
 	t.is(path.basename(filenamifyPath(path.join(directoryName, 'foo:bar'))), 'foo!bar');
 	t.is(path.basename(filenamifyPath(path.join(directoryName, 'This? This is very long filename that will lose its extension when passed into filenamify, which could cause issues.csv'))),
-		'This! This is very long filename that will lose its extension when passed into filenamify, which cou.csv');
+		'This! This is very long filename that will lose its extension when passed into filenamify, which.csv');
 });
 
 test('filenamify length', t => {
 	// Basename length: 152
 	const filename = 'this/is/a/very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_long_filename.txt';
-	t.is(filenamify(path.basename(filename)), 'very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_.txt');
+	t.is(filenamify(path.basename(filename)), 'very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_v.txt');
 	t.is(filenamify(path.basename(filename), {maxLength: 180}), 'very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_long_filename.txt');
+
+	// Extension longer than maxLength
+	t.is(filenamify('foo.asdfghjkl', {maxLength: 5}), 'f.asdfghjkl');
 
 	// Basename length: 148
 	const filenameNoExt = 'very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_long_filename';
