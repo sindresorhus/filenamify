@@ -35,7 +35,9 @@ export default function filenamify(string, options = {}) {
 	const allowedLength = typeof options.maxLength === 'number' ? options.maxLength : MAX_FILENAME_LENGTH;
 	if (string.length > allowedLength) {
 		const extensionIndex = string.lastIndexOf('.');
-		string = string.slice(0, Math.min(allowedLength, extensionIndex)) + string.slice(extensionIndex);
+		const filename = extensionIndex === -1 ? string : string.slice(0, extensionIndex);
+		const extension = extensionIndex === -1 ? '' : string.slice(extensionIndex);
+		string = filename.slice(0, Math.min(allowedLength, filename.length)) + extension;
 	}
 
 	return string;
