@@ -39,7 +39,7 @@ test('filenamify length', t => {
 	t.is(filenamify(path.basename(filename)), 'very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_v.txt');
 	t.is(filenamify(path.basename(filename), {maxLength: 180}), 'very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_long_filename.txt');
 
-	// Extension longer than maxLength
+	// File extension longer than `maxLength`
 	t.is(filenamify('foo.asdfghjkl', {maxLength: 5}), 'f.asdfghjkl');
 
 	// Basename length: 148
