@@ -5,7 +5,7 @@ import filenamify, {filenamifyPath} from './index.js';
 
 const directoryName = path.dirname(fileURLToPath(import.meta.url));
 
-test('filnamify()', t => {
+test('filenamify()', t => {
 	t.is(filenamify('foo/bar'), 'foo!bar');
 	t.is(filenamify('foo//bar'), 'foo!bar');
 	t.is(filenamify('//foo//bar//'), 'foo!bar');
@@ -25,6 +25,7 @@ test('filnamify()', t => {
 	t.is(filenamify('con', {replacement: '🐴🐴'}), 'con🐴🐴');
 	t.is(filenamify('c/n', {replacement: 'o'}), 'cono');
 	t.is(filenamify('c/n', {replacement: 'con'}), 'cconn');
+	t.is(filenamify('.dotfile'), '.dotfile');
 });
 
 test('filenamifyPath()', t => {
@@ -46,4 +47,5 @@ test('filenamify length', t => {
 	const filenameNoExt = 'very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_long_filename';
 	t.is(filenamify(filenameNoExt), 'very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_very_');
 	t.is(filenamify(filenameNoExt, {maxLength: 20}), 'very_very_very_very_');
+	t.is(filenamify('.asdfghjkl', {maxLength: 2}), '.asdfghjkl');
 });

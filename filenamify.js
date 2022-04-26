@@ -6,7 +6,7 @@ import stripOuter from 'strip-outer';
 const MAX_FILENAME_LENGTH = 100;
 
 const reControlChars = /[\u0000-\u001F\u0080-\u009F]/g; // eslint-disable-line no-control-regex
-const reRelativePath = /^\.+/;
+const reRelativePath = /^\.+(\\|\/)|^\.+$/;
 const reTrailingPeriods = /\.+$/;
 
 export default function filenamify(string, options = {}) {
@@ -21,9 +21,9 @@ export default function filenamify(string, options = {}) {
 	}
 
 	string = string.normalize('NFD');
+	string = string.replace(reRelativePath, replacement);
 	string = string.replace(filenameReservedRegex(), replacement);
 	string = string.replace(reControlChars, replacement);
-	string = string.replace(reRelativePath, replacement);
 	string = string.replace(reTrailingPeriods, '');
 
 	if (replacement.length > 0) {
