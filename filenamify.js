@@ -39,7 +39,7 @@ export default function filenamify(string, options = {}) {
 
 		// We removed the whole extension
 		if (string[string.length - 1] === '.') {
-			string = string + replacement;
+			string += replacement;
 		}
 	}
 
