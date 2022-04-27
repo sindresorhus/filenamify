@@ -17,6 +17,8 @@ test('filenamify()', t => {
 	t.is(filenamify('..'), '!');
 	t.is(filenamify('./'), '!');
 	t.is(filenamify('../'), '!');
+	t.is(filenamify('!.foo'), '!.foo');
+	t.is(filenamify('foo.!'), 'foo.!');
 	t.is(filenamify('foo.bar.'), 'foo.bar');
 	t.is(filenamify('foo.bar..'), 'foo.bar');
 	t.is(filenamify('foo.bar...'), 'foo.bar');

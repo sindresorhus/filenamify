@@ -27,8 +27,20 @@ export default function filenamify(string, options = {}) {
 	string = string.replace(reTrailingPeriods, '');
 
 	if (replacement.length > 0) {
+		const startedWithDot = string[0] === '.';
+
 		string = trimRepeated(string, replacement);
 		string = string.length > 1 ? stripOuter(string, replacement) : string;
+
+		// We removed the whole filename
+		if (!startedWithDot && string[0] === '.') {
+			string = replacement + string;
+		}
+
+		// We removed the whole extension
+		if (string[string.length - 1] === '.') {
+			string += replacement;
+		}
 	}
 
 	string = windowsReservedNameRegex().test(string) ? string + replacement : string;
