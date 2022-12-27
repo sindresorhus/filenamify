@@ -15,6 +15,7 @@ export default function filenamify(string, options = {}) {
 	}
 
 	const replacement = options.replacement === undefined ? '!' : options.replacement;
+	const preserveRepeatedReplacements = options.preserveRepeatedReplacements === undefined ? false : options.preserveRepeatedReplacements;
 
 	if (filenameReservedRegex().test(replacement) && reControlChars.test(replacement)) {
 		throw new Error('Replacement string cannot contain reserved filename characters');
@@ -29,7 +30,10 @@ export default function filenamify(string, options = {}) {
 	if (replacement.length > 0) {
 		const startedWithDot = string[0] === '.';
 
-		string = trimRepeated(string, replacement);
+		if (!preserveRepeatedReplacements) {
+			string = trimRepeated(string, replacement);
+		}
+
 		string = string.length > 1 ? stripOuter(string, replacement) : string;
 
 		// We removed the whole filename

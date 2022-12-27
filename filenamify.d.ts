@@ -18,6 +18,13 @@ export interface Options {
 	@default 100
 	*/
 	readonly maxLength?: number;
+
+	/**
+	Preserve the repeated replacements of a given string.
+
+	@default false
+	*/
+	readonly preserveRepeatedReplacements?: boolean;
 }
 
 /**
@@ -32,6 +39,9 @@ filenamify('<foo/bar>');
 
 filenamify('foo:"bar"', {replacement: '🐴'});
 //=> 'foo🐴bar'
+
+filenamify('/path/to/file---name.ext"', {replacement: '-', condenseReplacements: true});
+//=> 'path-to-file---name.ext'
 ```
 */
 export default function filenamify(string: string, options?: Options): string;

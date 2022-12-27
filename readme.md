@@ -63,6 +63,15 @@ Only the base of the filename is truncated, preserving the extension. If the ext
 
 Systems generally allow up to 255 characters, but we default to 100 for usability reasons.
 
+##### preserveRepeatedReplacements
+
+Type: `boolean`\
+Default: `false`
+
+If true, does not remove any repetition of the replacement string.
+
+The default behavior is to remove any repetitions of the replacement string, even if they are already present in the original string
+
 ## Browser-only import
 
 You can also import `filenamify/browser`, which only imports `filenamify` and not `filenamifyPath`, which relies on `path` being available or polyfilled. Importing `filenamify` this way is therefore useful when it is shipped using `webpack` or similar tools, and if `filenamifyPath` is not needed.
