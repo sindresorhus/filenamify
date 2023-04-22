@@ -1,10 +1,9 @@
-import trimRepeated from 'trim-repeated';
 import filenameReservedRegex, {windowsReservedNameRegex} from 'filename-reserved-regex';
-import stripOuter from 'strip-outer';
 
 // Doesn't make sense to have longer filenames
 const MAX_FILENAME_LENGTH = 100;
 
+const reRepeatedReservedChars = /([<>:"/\\|?*\u0000-\u001F]){2,}/g; // eslint-disable-line no-control-regex
 const reControlChars = /[\u0000-\u001F\u0080-\u009F]/g; // eslint-disable-line no-control-regex
 const reRelativePath = /^\.+(\\|\/)|^\.+$/;
 const reTrailingPeriods = /\.+$/;
@@ -20,6 +19,10 @@ export default function filenamify(string, options = {}) {
 		throw new Error('Replacement string cannot contain reserved filename characters');
 	}
 
+	if (replacement.length > 0) {
+		string = trimRepeatedReservedChars(string);
+	}
+
 	string = string.normalize('NFD');
 	string = string.replace(reRelativePath, replacement);
 	string = string.replace(filenameReservedRegex(), replacement);
@@ -28,9 +31,6 @@ export default function filenamify(string, options = {}) {
 
 	if (replacement.length > 0) {
 		const startedWithDot = string[0] === '.';
-
-		string = trimRepeated(string, replacement);
-		string = string.length > 1 ? stripOuter(string, replacement) : string;
 
 		// We removed the whole filename
 		if (!startedWithDot && string[0] === '.') {
@@ -58,3 +58,5 @@ export default function filenamify(string, options = {}) {
 
 	return string;
 }
+
+const trimRepeatedReservedChars = string => string.replace(reRepeatedReservedChars, '$1');

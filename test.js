@@ -8,10 +8,10 @@ const directoryName = path.dirname(fileURLToPath(import.meta.url));
 test('filenamify()', t => {
 	t.is(filenamify('foo/bar'), 'foo!bar');
 	t.is(filenamify('foo//bar'), 'foo!bar');
-	t.is(filenamify('//foo//bar//'), 'foo!bar');
+	t.is(filenamify('//foo//bar//'), '!foo!bar!');
 	t.is(filenamify('foo\\\\\\bar'), 'foo!bar');
 	t.is(filenamify('foo/bar', {replacement: '🐴🐴'}), 'foo🐴🐴bar');
-	t.is(filenamify('////foo////bar////', {replacement: '(('}), 'foo((bar');
+	t.is(filenamify('////foo////bar////', {replacement: '(('}), '((foo((bar((');
 	t.is(filenamify('foo\u0000bar'), 'foo!bar');
 	t.is(filenamify('.'), '!');
 	t.is(filenamify('..'), '!');
@@ -28,6 +28,11 @@ test('filenamify()', t => {
 	t.is(filenamify('c/n', {replacement: 'o'}), 'cono');
 	t.is(filenamify('c/n', {replacement: 'con'}), 'cconn');
 	t.is(filenamify('.dotfile'), '.dotfile');
+	t.is(filenamify('my <file name-', {replacement: '-'}), 'my -file name-');
+	t.is(filenamify('--<abc->>>--', {replacement: '-'}), '---abc----');
+	t.is(filenamify('-<<abc>-', {replacement: '-'}), '--abc--');
+	t.is(filenamify('my <file name<', {replacement: '-'}), 'my -file name-');
+	t.is(filenamify('my <file name<'), 'my !file name!');
 });
 
 test('filenamifyPath()', t => {

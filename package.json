@@ -43,9 +43,7 @@
 		"dirname"
 	],
 	"dependencies": {
-		"filename-reserved-regex": "^3.0.0",
-		"strip-outer": "^2.0.0",
-		"trim-repeated": "^2.0.0"
+		"filename-reserved-regex": "^3.0.0"
 	},
 	"devDependencies": {
 		"ava": "^3.15.0",
