@@ -3,12 +3,13 @@ import filenameReservedRegex, {windowsReservedNameRegex} from 'filename-reserved
 // Doesn't make sense to have longer filenames
 const MAX_FILENAME_LENGTH = 100;
 
-const reRepeatedReservedChars = /([<>:"/\\|?*\u0000-\u001F]){2,}/g; // eslint-disable-line no-control-regex
-const reControlChars = /[\u0000-\u001F\u0080-\u009F]/g; // eslint-disable-line no-control-regex
 const reRelativePath = /^\.+(\\|\/)|^\.+$/;
 const reTrailingPeriods = /\.+$/;
 
 export default function filenamify(string, options = {}) {
+	const reControlChars = /[\u0000-\u001F\u0080-\u009F]/g; // eslint-disable-line no-control-regex
+	const reRepeatedReservedCharacters = /([<>:"/\\|?*\u0000-\u001F]){2,}/g; // eslint-disable-line no-control-regex
+
 	if (typeof string !== 'string') {
 		throw new TypeError('Expected a string');
 	}
@@ -20,7 +21,7 @@ export default function filenamify(string, options = {}) {
 	}
 
 	if (replacement.length > 0) {
-		string = trimRepeatedReservedChars(string);
+		string = string.replace(reRepeatedReservedCharacters, '$1');
 	}
 
 	string = string.normalize('NFD');
@@ -58,5 +59,3 @@ export default function filenamify(string, options = {}) {
 
 	return string;
 }
-
-const trimRepeatedReservedChars = string => string.replace(reRepeatedReservedChars, '$1');
