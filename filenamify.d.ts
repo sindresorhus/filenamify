@@ -1,4 +1,4 @@
-export interface Options {
+export type Options = {
 	/**
 	String to use as replacement for reserved filename characters.
 
@@ -18,7 +18,7 @@ export interface Options {
 	@default 100
 	*/
 	readonly maxLength?: number;
-}
+};
 
 /**
 Convert a string to a valid filename.

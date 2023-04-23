@@ -16,7 +16,7 @@
 		"./browser": "./filenamify.js"
 	},
 	"engines": {
-		"node": ">=12.20"
+		"node": ">=16"
 	},
 	"scripts": {
 		"test": "xo && ava && tsd"
@@ -46,8 +46,8 @@
 		"filename-reserved-regex": "^3.0.0"
 	},
 	"devDependencies": {
-		"ava": "^3.15.0",
-		"tsd": "^0.18.0",
-		"xo": "^0.45.0"
+		"ava": "^5.2.0",
+		"tsd": "^0.28.1",
+		"xo": "^0.54.1"
 	}
 }

@@ -1,4 +1,4 @@
-import {Options} from './filenamify.js';
+import {type Options} from './filenamify.js';
 
 /**
 Convert the filename in a path a valid filename and return the augmented path.
@@ -13,4 +13,4 @@ filenamifyPath('foo:bar');
 */
 export default function filenamifyPath(path: string, options?: Options): string;
 
-export {Options} from './filenamify.js';
+export type {Options} from './filenamify.js';
