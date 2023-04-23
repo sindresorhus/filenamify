@@ -16,10 +16,10 @@ npm install filenamify
 import filenamify from 'filenamify';
 
 filenamify('<foo/bar>');
-//=> 'foo!bar'
+//=> '!foo!bar!'
 
 filenamify('foo:"bar"', {replacement: '🐴'});
-//=> 'foo🐴bar'
+//=> 'foo🐴bar🐴'
 ```
 
 ## API
@@ -71,7 +71,7 @@ You can also import `filenamify/browser`, which only imports `filenamify` and no
 import filenamify from 'filenamify/browser';
 
 filenamify('<foo/bar>');
-//=> 'foo!bar'
+//=> '!foo!bar!'
 ```
 
 ## Related

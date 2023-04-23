@@ -28,10 +28,10 @@ Convert a string to a valid filename.
 import filenamify from 'filenamify';
 
 filenamify('<foo/bar>');
-//=> 'foo!bar'
+//=> '!foo!bar!'
 
 filenamify('foo:"bar"', {replacement: '🐴'});
-//=> 'foo🐴bar'
+//=> 'foo🐴bar🐴'
 ```
 */
 export default function filenamify(string: string, options?: Options): string;
