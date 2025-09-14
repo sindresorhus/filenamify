@@ -2,7 +2,9 @@
 
 > Convert a string to a valid safe filename
 
-On Unix-like systems, `/` is reserved. On Windows, [`<>:"/\|?*`](http://msdn.microsoft.com/en-us/library/aa365247%28VS.85%29#naming_conventions) along with trailing periods are reserved.
+On Unix-like systems, `/` is reserved. On Windows, [`<>:"/\|?*`](http://msdn.microsoft.com/en-us/library/aa365247%28VS.85%29#naming_conventions) along with trailing periods and spaces are reserved.
+
+This module also removes non-printable control characters (including Unicode bidirectional marks) and normalizes Unicode whitespace.
 
 ## Install
 
@@ -50,7 +52,7 @@ Default: `'!'`
 
 String to use as replacement for reserved filename characters.
 
-Cannot contain: `<` `>` `:` `"` `/` `\` `|` `?` `*`
+Cannot contain: `<` `>` `:` `"` `/` `\` `|` `?` `*` or control characters
 
 ##### maxLength
 

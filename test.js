@@ -41,6 +41,9 @@ test('filenamifyPath()', t => {
 		path.basename(filenamifyPath(path.join(directoryName, 'This? This is very long filename that will lose its extension when passed into filenamify, which could cause issues.csv'))),
 		'This! This is very long filename that will lose its extension when passed into filenamify, which.csv',
 	);
+	// Test trailing spaces/periods with filenamifyPath
+	t.is(path.basename(filenamifyPath(path.join(directoryName, 'foo. '))), 'foo');
+	t.is(path.basename(filenamifyPath(path.join(directoryName, 'bar ...'))), 'bar');
 });
 
 test('filenamify length', t => {
@@ -93,7 +96,7 @@ test('Unicode normalization', t => {
 
 test('edge cases', t => {
 	// Empty string
-	t.is(filenamify(''), '');
+	t.is(filenamify(''), '!');
 
 	// Only reserved characters
 	t.is(filenamify('///'), '!');
@@ -127,4 +130,133 @@ test('repeated reserved characters', t => {
 	// Test with empty replacement
 	t.is(filenamify('foo<<<<bar', {replacement: ''}), 'foobar');
 	t.is(filenamify('foo::::bar', {replacement: ''}), 'foobar');
+});
+
+test('control characters and Unicode', t => {
+	// Test bidirectional control characters (security issue #39)
+	t.is(filenamify('bar\u202Ecod.bat'), 'bar!cod.bat');
+	t.is(filenamify('hello\u202Dworld'), 'hello!world');
+	t.is(filenamify('test\u202A\u202B\u202C'), 'test!!!');
+
+	// Test various control characters
+	t.is(filenamify('foo\u0000bar'), 'foo!bar'); // Null character
+	t.is(filenamify('foo\u007Fbar'), 'foo!bar'); // Delete character
+	t.is(filenamify('foo\u0080bar'), 'foo!bar'); // C1 control
+	t.is(filenamify('foo\u200Bbar'), 'foo!bar'); // Zero-width space
+	t.is(filenamify('foo\uFEFFbar'), 'foo!bar'); // BOM
+	t.is(filenamify('foo\u2028bar'), 'foo!bar'); // Line separator
+	t.is(filenamify('foo\u2029bar'), 'foo!bar'); // Paragraph separator
+
+	// Test Unicode whitespace normalization
+	t.is(filenamify('foo\u00A0bar'), 'foo bar'); // Non-breaking space
+	t.is(filenamify('foo\u2000bar'), 'foo bar'); // En quad
+	t.is(filenamify('foo\u3000bar'), 'foo bar'); // Ideographic space
+	t.is(filenamify('foo  \u00A0  \u2000  bar'), 'foo        bar'); // Multiple Unicode spaces normalized but regular spaces preserved
+	t.is(filenamify('foo\t\n\rbar'), 'foo bar'); // Tab, newline, carriage return
+
+	// Combined test with control chars and reserved chars
+	t.is(filenamify('foo\u202E/bar:baz\u200B.txt'), 'foo!!bar!baz!.txt');
+});
+
+test('replacement validation', t => {
+	// Test that control characters in replacement throw error
+	t.throws(() => filenamify('test', {replacement: '\u0000'}), {message: 'Replacement string cannot contain reserved filename characters'});
+	t.throws(() => filenamify('test', {replacement: '\u202E'}), {message: 'Replacement string cannot contain reserved filename characters'});
+	t.throws(() => filenamify('test', {replacement: 'a\u200Bb'}), {message: 'Replacement string cannot contain reserved filename characters'});
+});
+
+test('combined transformations', t => {
+	// Test NFC normalization + control chars + trailing spaces + truncation
+	const input = 'café\u202E\u200B...  ';
+	t.is(filenamify(input), 'café!!');
+
+	// With maxLength
+	const longInput = 'test\u202E\u200B' + 'x'.repeat(100) + '...  ';
+	t.is(filenamify(longInput, {maxLength: 10}), 'test!!' + 'x'.repeat(4));
+
+	// Everything problematic - control chars get replaced, then trailing dots/spaces removed
+	t.is(filenamify('\u202E\u200B\u0000...   '), '!!!');
+	t.is(filenamify('   \u200B\u202E   ', {replacement: 'x'}), '   xx'); // Leading spaces preserved
+});
+
+test('Windows reserved names edge cases', t => {
+	// Reserved names without extensions get suffix
+	t.is(filenamify('CON'), 'CON!');
+	t.is(filenamify('con'), 'con!');
+	t.is(filenamify('Com'), 'Com'); // Mixed case not reserved
+
+	// With extensions they're fine
+	t.is(filenamify('CON.txt'), 'CON.txt');
+	t.is(filenamify('con.txt'), 'con.txt');
+
+	// With numbers
+	t.is(filenamify('COM1'), 'COM1!');
+	t.is(filenamify('LPT9'), 'LPT9!');
+	t.is(filenamify('COM0'), 'COM0!'); // COM0 is also reserved
+});
+
+test('replacement edge cases', t => {
+	// Empty replacement
+	t.is(filenamify('foo/bar', {replacement: ''}), 'foobar');
+	t.is(filenamify('///', {replacement: ''}), ''); // Empty when replacement is empty
+
+	// Zero-width joiner should be allowed in replacement
+	t.is(filenamify('foo/bar', {replacement: '\u200D'}), 'foo‍bar');
+
+	// Multiple character replacement
+	t.is(filenamify('a/b/c', {replacement: '--'}), 'a--b--c');
+});
+
+test('file extension edge cases', t => {
+	// Multiple dots - last dot is extension separator
+	t.is(filenamify('file.backup.old.txt', {maxLength: 15}), 'file.backup.txt');
+	t.is(filenamify('file.backup.old.txt', {maxLength: 10}), 'file.b.txt');
+
+	// Extension-only files
+	t.is(filenamify('.gitignore'), '.gitignore');
+	t.is(filenamify('.gitignore...'), '.gitignore');
+
+	// File with dots - last dot is extension
+	t.is(filenamify('file.name.here', {maxLength: 10}), 'file..here'); // "file.name" + ".here"
+	t.is(filenamify('file.name.here', {maxLength: 8}), 'fil.here'); // "fil" + ".here"
+
+	// No dots
+	t.is(filenamify('filename', {maxLength: 8}), 'filename');
+	t.is(filenamify('verylongfilename', {maxLength: 8}), 'verylong');
+});
+
+test('trailing spaces and periods', t => {
+	// Test removal of trailing spaces and periods
+	t.is(filenamify('x.   ..'), 'x');
+	t.is(filenamify('foo. '), 'foo');
+	t.is(filenamify('foo '), 'foo');
+	t.is(filenamify('foo.'), 'foo');
+	t.is(filenamify('foo...'), 'foo');
+	t.is(filenamify('foo   '), 'foo');
+	t.is(filenamify('foo. . .'), 'foo');
+	t.is(filenamify(' . . '), '!');
+	t.is(filenamify('...'), '!');
+	t.is(filenamify('   '), '!');
+
+	// With custom replacement
+	t.is(filenamify(' . . ', {replacement: 'x'}), 'x');
+	t.is(filenamify('...', {replacement: 'y'}), 'y');
+
+	// Combined with other transformations
+	t.is(filenamify('foo/bar.  '), 'foo!bar');
+	t.is(filenamify('foo:bar ...'), 'foo!bar');
+
+	// Windows reserved names with trailing spaces/periods
+	t.is(filenamify('con .'), 'con!');
+	t.is(filenamify('aux...'), 'aux!');
+	t.is(filenamify('nul  '), 'nul!');
+
+	// With maxLength and trailing spaces/periods
+	t.is(filenamify('hello world.  ', {maxLength: 11}), 'hello world');
+	t.is(filenamify('test...', {maxLength: 4}), 'test');
+
+	// Ensure internal spaces/periods are not removed
+	t.is(filenamify('foo. .bar'), 'foo. .bar');
+	t.is(filenamify('foo  bar'), 'foo  bar');
+	t.is(filenamify('foo...bar'), 'foo...bar');
 });

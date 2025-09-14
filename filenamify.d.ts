@@ -2,7 +2,7 @@ export type Options = {
 	/**
 	String to use as replacement for reserved filename characters.
 
-	Cannot contain: `<` `>` `:` `"` `/` `\` `|` `?` `*`
+	Cannot contain: `<` `>` `:` `"` `/` `\` `|` `?` `*` or control characters
 
 	@default '!'
 	*/

@@ -4,9 +4,17 @@ import filenameReservedRegex, {windowsReservedNameRegex} from 'filename-reserved
 const MAX_FILENAME_LENGTH = 100;
 
 const reRelativePath = /^\.+(\\|\/)|^\.+$/;
-const reTrailingPeriods = /\.+$/;
-const reControlChars = /[\u0000-\u001F\u0080-\u009F]/g; // eslint-disable-line no-control-regex
+const reTrailingDotsAndSpaces = /[. ]+$/;
+
+// Remove all problematic characters except zero-width joiner (\u200D) needed for emoji
+const reControlChars = /[\p{Control}\p{Format}\p{Zl}\p{Zp}\uFFF0-\uFFFF]/gu;
+const reControlCharsTest = /[\p{Control}\p{Format}\p{Zl}\p{Zp}\uFFF0-\uFFFF]/u;
+const isZeroWidthJoiner = char => char === '\u200D';
 const reRepeatedReservedCharacters = /([<>:"/\\|?*\u0000-\u001F]){2,}/g; // eslint-disable-line no-control-regex
+
+// Normalize various Unicode whitespace characters to regular space
+// Using specific characters instead of \s to avoid matching regular spaces
+const reUnicodeWhitespace = /[\t\n\r\u00A0\u1680\u2000-\u200A\u202F\u205F\u3000]+/g;
 
 let segmenter;
 function getSegmenter() {
@@ -19,14 +27,17 @@ export default function filenamify(string, options = {}) {
 		throw new TypeError('Expected a string');
 	}
 
-	const replacement = options.replacement === undefined ? '!' : options.replacement;
+	const replacement = options.replacement ?? '!';
 
-	if (filenameReservedRegex().test(replacement) || reControlChars.test(replacement)) {
+	if (filenameReservedRegex().test(replacement) || [...replacement].some(char => reControlCharsTest.test(char) && !isZeroWidthJoiner(char))) {
 		throw new Error('Replacement string cannot contain reserved filename characters');
 	}
 
 	// Normalize to NFC first to stabilize byte representation and length calculations across platforms.
 	string = string.normalize('NFC');
+
+	// Normalize Unicode whitespace to single spaces
+	string = string.replaceAll(reUnicodeWhitespace, ' ');
 
 	if (replacement.length > 0) {
 		string = string.replaceAll(reRepeatedReservedCharacters, '$1');
@@ -34,21 +45,14 @@ export default function filenamify(string, options = {}) {
 
 	string = string.replace(reRelativePath, replacement);
 	string = string.replace(filenameReservedRegex(), replacement);
-	string = string.replaceAll(reControlChars, replacement);
-	string = string.replace(reTrailingPeriods, '');
+	string = string.replaceAll(reControlChars, char => isZeroWidthJoiner(char) ? char : replacement);
 
-	if (replacement.length > 0) {
-		const startedWithDot = string[0] === '.';
+	// Trim trailing spaces and periods (Windows rule)
+	string = string.replace(reTrailingDotsAndSpaces, '');
 
-		// We removed the whole filename
-		if (!startedWithDot && string[0] === '.') {
-			string = replacement + string;
-		}
-
-		// We removed the whole extension
-		if (string.at(-1) === '.') {
-			string += replacement;
-		}
+	// If the string is now empty, use replacement or default
+	if (string.length === 0) {
+		string = replacement;
 	}
 
 	string = windowsReservedNameRegex().test(string) ? string + replacement : string;
