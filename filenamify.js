@@ -20,11 +20,13 @@ export default function filenamify(string, options = {}) {
 		throw new Error('Replacement string cannot contain reserved filename characters');
 	}
 
+	// Normalize to NFC first to stabilize byte representation and length calculations across platforms.
+	string = string.normalize('NFC');
+
 	if (replacement.length > 0) {
 		string = string.replaceAll(reRepeatedReservedCharacters, '$1');
 	}
 
-	string = string.normalize('NFD');
 	string = string.replace(reRelativePath, replacement);
 	string = string.replace(filenameReservedRegex(), replacement);
 	string = string.replaceAll(reControlChars, replacement);
