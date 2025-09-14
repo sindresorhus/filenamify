@@ -43,12 +43,12 @@ export default function filenamify(string, options = {}) {
 		string = string.replaceAll(reRepeatedReservedCharacters, '$1');
 	}
 
+	// Trim trailing spaces and periods (Windows rule) - do this before other replacements
+	string = string.replace(reTrailingDotsAndSpaces, '');
+
 	string = string.replace(reRelativePath, replacement);
 	string = string.replace(filenameReservedRegex(), replacement);
 	string = string.replaceAll(reControlChars, char => isZeroWidthJoiner(char) ? char : replacement);
-
-	// Trim trailing spaces and periods (Windows rule)
-	string = string.replace(reTrailingDotsAndSpaces, '');
 
 	// If the string is now empty, use replacement or default
 	if (string.length === 0) {

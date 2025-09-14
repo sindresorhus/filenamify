@@ -50,7 +50,7 @@
 		"dirname"
 	],
 	"dependencies": {
-		"filename-reserved-regex": "^3.0.0"
+		"filename-reserved-regex": "^4.0.0"
 	},
 	"devDependencies": {
 		"ava": "^6.4.1",
