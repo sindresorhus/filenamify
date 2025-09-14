@@ -9,7 +9,7 @@ test('filenamify()', t => {
 	t.is(filenamify('foo/bar'), 'foo!bar');
 	t.is(filenamify('foo//bar'), 'foo!bar');
 	t.is(filenamify('//foo//bar//'), '!foo!bar!');
-	t.is(filenamify('foo\\\\\\bar'), 'foo!bar');
+	t.is(filenamify(String.raw`foo\\\bar`), 'foo!bar');
 	t.is(filenamify('foo/bar', {replacement: '🐴🐴'}), 'foo🐴🐴bar');
 	t.is(filenamify('////foo////bar////', {replacement: '(('}), '((foo((bar((');
 	t.is(filenamify('foo\u0000bar'), 'foo!bar');
@@ -37,8 +37,10 @@ test('filenamify()', t => {
 
 test('filenamifyPath()', t => {
 	t.is(path.basename(filenamifyPath(path.join(directoryName, 'foo:bar'))), 'foo!bar');
-	t.is(path.basename(filenamifyPath(path.join(directoryName, 'This? This is very long filename that will lose its extension when passed into filenamify, which could cause issues.csv'))),
-		'This! This is very long filename that will lose its extension when passed into filenamify, which.csv');
+	t.is(
+		path.basename(filenamifyPath(path.join(directoryName, 'This? This is very long filename that will lose its extension when passed into filenamify, which could cause issues.csv'))),
+		'This! This is very long filename that will lose its extension when passed into filenamify, which.csv',
+	);
 });
 
 test('filenamify length', t => {

@@ -21,13 +21,13 @@ export default function filenamify(string, options = {}) {
 	}
 
 	if (replacement.length > 0) {
-		string = string.replace(reRepeatedReservedCharacters, '$1');
+		string = string.replaceAll(reRepeatedReservedCharacters, '$1');
 	}
 
 	string = string.normalize('NFD');
 	string = string.replace(reRelativePath, replacement);
 	string = string.replace(filenameReservedRegex(), replacement);
-	string = string.replace(reControlChars, replacement);
+	string = string.replaceAll(reControlChars, replacement);
 	string = string.replace(reTrailingPeriods, '');
 
 	if (replacement.length > 0) {
@@ -39,7 +39,7 @@ export default function filenamify(string, options = {}) {
 		}
 
 		// We removed the whole extension
-		if (string[string.length - 1] === '.') {
+		if (string.at(-1) === '.') {
 			string += replacement;
 		}
 	}

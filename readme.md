@@ -30,7 +30,7 @@ Convert a string to a valid filename.
 
 ### filenamifyPath(path, options?)
 
-Convert the filename in a path a valid filename and return the augmented path.
+Convert the filename in a path to a valid filename and return the augmented path.
 
 ```js
 import {filenamifyPath} from 'filenamify';

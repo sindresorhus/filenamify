@@ -1,7 +1,7 @@
 import {type Options} from './filenamify.js';
 
 /**
-Convert the filename in a path a valid filename and return the augmented path.
+Convert the filename in a path to a valid filename and return the augmented path.
 
 @example
 ```

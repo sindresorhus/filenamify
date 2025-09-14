@@ -12,14 +12,21 @@
 	},
 	"type": "module",
 	"exports": {
-		".": "./index.js",
-		"./browser": "./filenamify.js"
+		".": {
+			"types": "./index.d.ts",
+			"default": "./index.js"
+		},
+		"./browser": {
+			"types": "./filenamify.d.ts",
+			"default": "./filenamify.js"
+		}
 	},
+	"sideEffects": false,
 	"engines": {
-		"node": ">=16"
+		"node": ">=20"
 	},
 	"scripts": {
-		"test": "xo && ava && tsd"
+		"test": "xo && ava"
 	},
 	"files": [
 		"filenamify-path.d.ts",
@@ -46,8 +53,7 @@
 		"filename-reserved-regex": "^3.0.0"
 	},
 	"devDependencies": {
-		"ava": "^5.2.0",
-		"tsd": "^0.28.1",
-		"xo": "^0.54.1"
+		"ava": "^6.4.1",
+		"xo": "^1.2.2"
 	}
 }
