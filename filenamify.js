@@ -5,18 +5,23 @@ const MAX_FILENAME_LENGTH = 100;
 
 const reRelativePath = /^\.+(\\|\/)|^\.+$/;
 const reTrailingPeriods = /\.+$/;
+const reControlChars = /[\u0000-\u001F\u0080-\u009F]/g; // eslint-disable-line no-control-regex
+const reRepeatedReservedCharacters = /([<>:"/\\|?*\u0000-\u001F]){2,}/g; // eslint-disable-line no-control-regex
+
+let segmenter;
+function getSegmenter() {
+	segmenter ??= new Intl.Segmenter(undefined, {granularity: 'grapheme'});
+	return segmenter;
+}
 
 export default function filenamify(string, options = {}) {
-	const reControlChars = /[\u0000-\u001F\u0080-\u009F]/g; // eslint-disable-line no-control-regex
-	const reRepeatedReservedCharacters = /([<>:"/\\|?*\u0000-\u001F]){2,}/g; // eslint-disable-line no-control-regex
-
 	if (typeof string !== 'string') {
 		throw new TypeError('Expected a string');
 	}
 
 	const replacement = options.replacement === undefined ? '!' : options.replacement;
 
-	if (filenameReservedRegex().test(replacement) && reControlChars.test(replacement)) {
+	if (filenameReservedRegex().test(replacement) || reControlChars.test(replacement)) {
 		throw new Error('Replacement string cannot contain reserved filename characters');
 	}
 
@@ -51,13 +56,34 @@ export default function filenamify(string, options = {}) {
 	if (string.length > allowedLength) {
 		const extensionIndex = string.lastIndexOf('.');
 		if (extensionIndex === -1) {
-			string = string.slice(0, allowedLength);
+			string = truncateByGraphemeBudget(string, allowedLength);
 		} else {
 			const filename = string.slice(0, extensionIndex);
 			const extension = string.slice(extensionIndex);
-			string = filename.slice(0, Math.max(1, allowedLength - extension.length)) + extension;
+			const baseBudget = Math.max(0, allowedLength - extension.length);
+			string = truncateByGraphemeBudget(filename, baseBudget) + extension;
 		}
 	}
 
 	return string;
+}
+
+function truncateByGraphemeBudget(input, budget) {
+	if (input.length <= budget) {
+		return input;
+	}
+
+	let count = 0;
+	let output = '';
+	for (const {segment} of getSegmenter().segment(input)) {
+		const next = count + segment.length;
+		if (next > budget) {
+			break;
+		}
+
+		output += segment;
+		count = next;
+	}
+
+	return output;
 }
