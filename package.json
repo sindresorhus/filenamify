@@ -31,8 +31,6 @@
 	"files": [
 		"filenamify-path.d.ts",
 		"filenamify-path.js",
-		"filenamify.d.ts",
-		"filenamify.js",
 		"index.d.ts",
 		"index.js",
 		"path.d.ts",
