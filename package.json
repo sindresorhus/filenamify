@@ -13,12 +13,12 @@
 	"type": "module",
 	"exports": {
 		".": {
-			"types": "./index.d.ts",
-			"default": "./index.js"
+			"types": "./filenamify.d.ts",
+			"default": "./filenamify.js"
 		},
 		"./path": {
-			"types": "./path.d.ts",
-			"default": "./path.js"
+			"types": "./filenamify-path.d.ts",
+			"default": "./filenamify-path.js"
 		}
 	},
 	"sideEffects": false,
@@ -31,10 +31,8 @@
 	"files": [
 		"filenamify-path.d.ts",
 		"filenamify-path.js",
-		"index.d.ts",
-		"index.js",
-		"path.d.ts",
-		"path.js"
+		"filenamify.d.ts",
+		"filenamify.js"
 	],
 	"keywords": [
 		"filename",
