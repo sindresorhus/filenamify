@@ -36,6 +36,7 @@ Convert the filename in a path to a valid filename and return the augmented path
 
 ```js
 import filenamifyPath from 'filenamify/path';
+// Note: This entry point uses node:path
 
 filenamifyPath('foo:bar');
 //=> 'foo!bar'
