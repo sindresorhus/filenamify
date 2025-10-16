@@ -16,9 +16,9 @@
 			"types": "./index.d.ts",
 			"default": "./index.js"
 		},
-		"./browser": {
-			"types": "./filenamify.d.ts",
-			"default": "./filenamify.js"
+		"./path": {
+			"types": "./path.d.ts",
+			"default": "./path.js"
 		}
 	},
 	"sideEffects": false,
@@ -34,7 +34,9 @@
 		"filenamify.d.ts",
 		"filenamify.js",
 		"index.d.ts",
-		"index.js"
+		"index.js",
+		"path.d.ts",
+		"path.js"
 	],
 	"keywords": [
 		"filename",

@@ -35,7 +35,7 @@ Convert a string to a valid filename.
 Convert the filename in a path to a valid filename and return the augmented path.
 
 ```js
-import {filenamifyPath} from 'filenamify';
+import filenamifyPath from 'filenamify/path';
 
 filenamifyPath('foo:bar');
 //=> 'foo!bar'
@@ -66,17 +66,6 @@ Only the base of the filename is truncated, preserving the extension. If the ext
 Truncation is grapheme-aware and will not split Unicode characters (surrogate pairs or extended grapheme clusters). If the remaining budget (after accounting for the extension) is smaller than a whole grapheme, the base filename may be truncated to an empty string to avoid splitting.
 
 Systems generally allow up to 255 characters, but we default to 100 for usability reasons.
-
-## Browser-only import
-
-You can also import `filenamify/browser`, which only imports `filenamify` and not `filenamifyPath`, which relies on `path` being available or polyfilled. Importing `filenamify` this way is therefore useful when it is shipped using `webpack` or similar tools, and if `filenamifyPath` is not needed.
-
-```js
-import filenamify from 'filenamify/browser';
-
-filenamify('<foo/bar>');
-//=> '!foo!bar!'
-```
 
 ## Related
 

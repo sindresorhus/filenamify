@@ -1,7 +1,8 @@
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import test from 'ava';
-import filenamify, {filenamifyPath} from './index.js';
+import filenamifyPath from './path.js';
+import filenamify from './index.js';
 
 const directoryName = path.dirname(fileURLToPath(import.meta.url));
 
