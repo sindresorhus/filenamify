@@ -52,7 +52,7 @@ Default: `'!'`
 
 String to use as replacement for reserved filename characters.
 
-Cannot contain: `<` `>` `:` `"` `/` `\` `|` `?` `*` or control characters
+Cannot contain: `<` `>` `:` `"` `/` `\` `|` `?` `*` or control characters.
 
 ##### maxLength
 

@@ -163,6 +163,43 @@ test('replacement validation', t => {
 	t.throws(() => filenamify('test', {replacement: '\u0000'}), {message: 'Replacement string cannot contain reserved filename characters'});
 	t.throws(() => filenamify('test', {replacement: '\u202E'}), {message: 'Replacement string cannot contain reserved filename characters'});
 	t.throws(() => filenamify('test', {replacement: 'a\u200Bb'}), {message: 'Replacement string cannot contain reserved filename characters'});
+
+	// Test that truly reserved characters throw error
+	t.throws(() => filenamify('test', {replacement: '<'}), {message: 'Replacement string cannot contain reserved filename characters'});
+	t.throws(() => filenamify('test', {replacement: 'a/b'}), {message: 'Replacement string cannot contain reserved filename characters'});
+});
+
+test('replacement with spaces and periods (issue #45)', t => {
+	// Test that spaces work as replacement in normal cases
+	t.is(filenamify('foo/bar', {replacement: ' '}), 'foo bar');
+	t.is(filenamify('foo:bar', {replacement: ' '}), 'foo bar');
+
+	// Test that trailing spaces are handled correctly
+	t.is(filenamify('foo/', {replacement: ' '}), 'foo');
+	t.is(filenamify('foo<', {replacement: ' '}), 'foo');
+
+	// Test edge case: only invalid characters with space replacement
+	t.is(filenamify('///', {replacement: ' '}), '!'); // Fallback to '!'
+	t.is(filenamify('<<<', {replacement: ' '}), '!');
+
+	// Test periods as replacement
+	t.is(filenamify('foo/bar', {replacement: '.'}), 'foo.bar');
+	t.is(filenamify('foo/', {replacement: '.'}), 'foo');
+	t.is(filenamify('///', {replacement: '.'}), '!'); // Fallback to '!'
+
+	// Test replacement ending with space
+	t.is(filenamify('foo/bar', {replacement: '- '}), 'foo- bar');
+	t.is(filenamify('foo/', {replacement: '- '}), 'foo-');
+	t.is(filenamify('///', {replacement: '- '}), '-'); // Trailing space stripped
+
+	// Test replacement ending with period
+	t.is(filenamify('foo/bar', {replacement: '-.'}), 'foo-.bar');
+	t.is(filenamify('foo/', {replacement: '-.'}), 'foo-');
+	t.is(filenamify('///', {replacement: '-.'}), '-'); // Trailing period stripped
+
+	// Test spaces in the middle
+	t.is(filenamify('foo/bar', {replacement: 'a b'}), 'fooa bbar');
+	t.is(filenamify('///', {replacement: 'a b'}), 'a b');
 });
 
 test('combined transformations', t => {
@@ -223,6 +260,28 @@ test('file extension edge cases', t => {
 	// No dots
 	t.is(filenamify('filename', {maxLength: 8}), 'filename');
 	t.is(filenamify('verylongfilename', {maxLength: 8}), 'verylong');
+});
+
+test('truncation edge cases', t => {
+	// Truncation creating Windows reserved names (must add suffix for Windows compatibility)
+	t.is(filenamify('CONTEXT', {maxLength: 3}), 'CON!');
+	t.is(filenamify('CON' + 'x'.repeat(200), {maxLength: 3}), 'CON!');
+	t.is(filenamify('PRNTHING', {maxLength: 3}), 'PRN!');
+	t.is(filenamify('COM1EXTRA', {maxLength: 4}), 'COM1!');
+	t.is(filenamify('AUXILIARY', {maxLength: 3}), 'AUX!');
+
+	// Truncation creating trailing spaces (must be stripped for Windows compatibility)
+	t.is(filenamify('hello world', {maxLength: 6}), 'hello');
+	t.is(filenamify('foo bar baz', {maxLength: 8}), 'foo bar');
+	t.is(filenamify('ab cd ef', {maxLength: 6}), 'ab cd');
+
+	// Truncation creating trailing periods (must be stripped for Windows compatibility)
+	t.is(filenamify('test. . .', {maxLength: 6}), 'test');
+	t.is(filenamify('dots....', {maxLength: 6}), 'dots');
+
+	// Truncation with extension - trailing spaces/periods in base should be stripped
+	t.is(filenamify('hello world test.txt', {maxLength: 16}), 'hello world.txt');
+	t.is(filenamify('test.. .txt', {maxLength: 8}), 'test.txt');
 });
 
 test('trailing spaces and periods', t => {
