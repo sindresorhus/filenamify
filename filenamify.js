@@ -47,6 +47,19 @@ function truncateFilename(filename, maxLength) {
 	return truncatedBase.replace(/ +$/, '') + extension;
 }
 
+function ensureNonWindowsReservedName(filename, replacement) {
+	const extensionIndex = filename.indexOf('.');
+	const base = extensionIndex === -1 ? filename : filename.slice(0, extensionIndex);
+
+	if (!windowsReservedNameRegex().test(base)) {
+		return filename;
+	}
+
+	return extensionIndex === -1
+		? filename + replacement
+		: base + replacement + filename.slice(extensionIndex);
+}
+
 export default function filenamify(string, options = {}) {
 	if (typeof string !== 'string') {
 		throw new TypeError('Expected a string');
@@ -100,9 +113,7 @@ export default function filenamify(string, options = {}) {
 
 	// Check for Windows reserved names after truncation and stripping
 	// Windows compatibility takes precedence over maxLength, so we add suffix even if it exceeds limit
-	if (windowsReservedNameRegex().test(string)) {
-		string += replacement;
-	}
+	string = ensureNonWindowsReservedName(string, replacement);
 
 	return string;
 }

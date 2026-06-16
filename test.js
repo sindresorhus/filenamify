@@ -222,9 +222,12 @@ test('Windows reserved names edge cases', t => {
 	t.is(filenamify('con'), 'con!');
 	t.is(filenamify('Com'), 'Com'); // Mixed case not reserved
 
-	// With extensions they're fine
-	t.is(filenamify('CON.txt'), 'CON.txt');
-	t.is(filenamify('con.txt'), 'con.txt');
+	// Reserved names with extensions get suffix before the extension
+	t.is(filenamify('CON.txt'), 'CON!.txt');
+	t.is(filenamify('con.txt'), 'con!.txt');
+	t.is(filenamify('NUL.tar.gz'), 'NUL!.tar.gz');
+	t.is(filenamify('COM1.log'), 'COM1!.log');
+	t.is(filenamify('LPT9.csv'), 'LPT9!.csv');
 
 	// With numbers
 	t.is(filenamify('COM1'), 'COM1!');
