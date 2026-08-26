@@ -51,13 +51,16 @@ function ensureNonWindowsReservedName(filename, replacement) {
 	const extensionIndex = filename.indexOf('.');
 	const base = extensionIndex === -1 ? filename : filename.slice(0, extensionIndex);
 
-	if (!windowsReservedNameRegex().test(base)) {
+	// Windows trims trailing dots and spaces from the base before matching device names
+	const trimmedBase = base.replace(reTrailingDotsAndSpaces, '');
+
+	if (!windowsReservedNameRegex().test(trimmedBase)) {
 		return filename;
 	}
 
 	return extensionIndex === -1
 		? filename + replacement
-		: base + replacement + filename.slice(extensionIndex);
+		: trimmedBase + replacement + filename.slice(extensionIndex);
 }
 
 export default function filenamify(string, options = {}) {

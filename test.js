@@ -233,6 +233,13 @@ test('Windows reserved names edge cases', t => {
 	t.is(filenamify('COM1'), 'COM1!');
 	t.is(filenamify('LPT9'), 'LPT9!');
 	t.is(filenamify('COM0'), 'COM0!'); // COM0 is also reserved
+
+	// Trailing spaces/dots on the base are trimmed by Windows before matching the device name
+	t.is(filenamify('CON .txt'), 'CON!.txt');
+	t.is(filenamify('con .txt'), 'con!.txt');
+	t.is(filenamify('COM1 .txt'), 'COM1!.txt');
+	t.is(filenamify('CON  .txt'), 'CON!.txt');
+	t.is(filenamify('CONX .txt'), 'CONX .txt'); // Not reserved
 });
 
 test('replacement edge cases', t => {
