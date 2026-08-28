@@ -86,12 +86,12 @@ test('grapheme-aware truncation', t => {
 
 test('Unicode normalization', t => {
 	// Test NFC normalization (é vs e + combining acute)
-	const decomposed = 'café'; // E + combining acute
-	const precomposed = 'café'; // É as single character
+	const decomposed = 'cafe\u0301'; // Lowercase e + combining acute
+	const precomposed = 'café'; // Precomposed lowercase é
 	t.is(filenamify(decomposed), filenamify(precomposed));
 
 	// Test that normalization happens before length check
-	t.is(filenamify('caféabc', {maxLength: 6}), 'caféab');
+	t.is(filenamify('cafe\u0301abc', {maxLength: 6}), 'caféab');
 });
 
 test('edge cases', t => {
@@ -153,6 +153,7 @@ test('control characters and Unicode', t => {
 	t.is(filenamify('foo\u3000bar'), 'foo bar'); // Ideographic space
 	t.is(filenamify('foo  \u00A0  \u2000  bar'), 'foo        bar'); // Multiple Unicode spaces normalized but regular spaces preserved
 	t.is(filenamify('foo\t\n\rbar'), 'foo bar'); // Tab, newline, carriage return
+	t.is(filenamify('CON\u00A0.txt'), 'CON!.txt'); // Unicode whitespace normalization creates a Windows reserved name
 
 	// Combined test with control chars and reserved chars
 	t.is(filenamify('foo\u202E/bar:baz\u200B.txt'), 'foo!!bar!baz!.txt');
@@ -220,7 +221,7 @@ test('Windows reserved names edge cases', t => {
 	// Reserved names without extensions get suffix
 	t.is(filenamify('CON'), 'CON!');
 	t.is(filenamify('con'), 'con!');
-	t.is(filenamify('Com'), 'Com'); // Mixed case not reserved
+	t.is(filenamify('Com'), 'Com'); // COM without a port number is not reserved
 
 	// Reserved names with extensions get suffix before the extension
 	t.is(filenamify('CON.txt'), 'CON!.txt');
@@ -232,7 +233,36 @@ test('Windows reserved names edge cases', t => {
 	// With numbers
 	t.is(filenamify('COM1'), 'COM1!');
 	t.is(filenamify('LPT9'), 'LPT9!');
-	t.is(filenamify('COM0'), 'COM0!'); // COM0 is also reserved
+	t.is(filenamify('COM0'), 'COM0!'); // Preserve existing conservative behavior
+	t.is(filenamify('LPT0'), 'LPT0!');
+
+	// Windows ignores spaces before the extension when matching reserved names
+	t.is(filenamify('CON .txt'), 'CON!.txt');
+	t.is(filenamify('con  .txt'), 'con!.txt');
+	t.is(filenamify('COM1 .txt'), 'COM1!.txt');
+	t.is(filenamify('CONX .txt'), 'CONX .txt');
+
+	// Replacements that would leave the name reserved fall back to a safe suffix
+	t.is(filenamify('CON .txt', {replacement: ''}), 'CON!.txt');
+	t.is(filenamify('CON .txt', {replacement: ' '}), 'CON!.txt');
+	t.is(filenamify('CON .txt', {replacement: '.'}), 'CON!.txt');
+	t.is(filenamify('CON .txt', {replacement: ' .x'}), 'CON!.txt');
+	t.is(filenamify('CON.txt', {replacement: ''}), 'CON!.txt');
+	t.is(filenamify('CON', {replacement: ''}), 'CON!');
+	t.is(filenamify('CON', {replacement: ' '}), 'CON!');
+	t.is(filenamify('CON', {replacement: '.'}), 'CON!');
+	t.is(filenamify('CON', {replacement: 'x '}), 'CONx');
+	t.is(filenamify('CON', {replacement: 'x.'}), 'CONx');
+	t.is(filenamify('CON .txt', {replacement: '🐴'}), 'CON🐴.txt');
+	t.is(filenamify('CONTEXT', {maxLength: 3, replacement: ''}), 'CON!');
+	t.is(filenamify('C/ON.txt', {replacement: ''}), 'CON!.txt');
+
+	// Additional Windows device names
+	t.is(filenamify('conin$.txt'), 'conin$!.txt');
+	t.is(filenamify('CONOUT$ .txt'), 'CONOUT$!.txt');
+	t.is(filenamify('COM¹.txt'), 'COM¹!.txt');
+	t.is(filenamify('COM².txt'), 'COM²!.txt');
+	t.is(filenamify('LPT³ .txt'), 'LPT³!.txt');
 });
 
 test('replacement edge cases', t => {
@@ -245,6 +275,13 @@ test('replacement edge cases', t => {
 
 	// Multiple character replacement
 	t.is(filenamify('a/b/c', {replacement: '--'}), 'a--b--c');
+
+	// JavaScript replacement tokens are treated literally
+	t.is(filenamify('foo/bar', {replacement: '$&'}), 'foo$&bar');
+	t.is(filenamify('foo/bar', {replacement: '$$'}), 'foo$$bar');
+	t.is(filenamify('foo/bar', {replacement: '$`'}), 'foo$`bar');
+	t.is(filenamify('foo/bar', {replacement: '$\''}), 'foo$\'bar');
+	t.is(filenamify('../foo', {replacement: '$&'}), '$&foo');
 });
 
 test('file extension edge cases', t => {
@@ -272,6 +309,7 @@ test('truncation edge cases', t => {
 	t.is(filenamify('PRNTHING', {maxLength: 3}), 'PRN!');
 	t.is(filenamify('COM1EXTRA', {maxLength: 4}), 'COM1!');
 	t.is(filenamify('AUXILIARY', {maxLength: 3}), 'AUX!');
+	t.is(filenamify('CONTEXT.txt', {maxLength: 7}), 'CON!.txt');
 
 	// Truncation creating trailing spaces (must be stripped for Windows compatibility)
 	t.is(filenamify('hello world', {maxLength: 6}), 'hello');

@@ -5,6 +5,8 @@ const MAX_FILENAME_LENGTH = 100;
 
 const reRelativePath = /^\.+(\\|\/)|^\.+$/;
 const reTrailingDotsAndSpaces = /[. ]+$/;
+const reTrailingSpaces = / +$/;
+const reWindowsReservedName = windowsReservedNameRegex();
 
 // Remove all problematic characters except zero-width joiner (\u200D) needed for emoji
 const reControlChars = /[\p{Control}\p{Format}\p{Zl}\p{Zp}\uFFF0-\uFFFF]/gu;
@@ -44,20 +46,23 @@ function truncateFilename(filename, maxLength) {
 	const truncatedBase = truncateByGraphemeBudget(base, baseBudget);
 
 	// Strip trailing spaces from base (not periods - they're not trailing in final filename)
-	return truncatedBase.replace(/ +$/, '') + extension;
+	return truncatedBase.replace(reTrailingSpaces, '') + extension;
 }
 
 function ensureNonWindowsReservedName(filename, replacement) {
-	const extensionIndex = filename.indexOf('.');
-	const base = extensionIndex === -1 ? filename : filename.slice(0, extensionIndex);
-
-	if (!windowsReservedNameRegex().test(base)) {
+	if (!reWindowsReservedName.test(filename)) {
 		return filename;
 	}
 
-	return extensionIndex === -1
-		? filename + replacement
-		: base + replacement + filename.slice(extensionIndex);
+	const extensionIndex = filename.indexOf('.');
+	const base = extensionIndex === -1 ? filename : filename.slice(0, extensionIndex);
+	const baseWithoutTrailingSpaces = base.replace(reTrailingSpaces, '');
+	const extension = extensionIndex === -1 ? '' : filename.slice(extensionIndex);
+	const candidate = (baseWithoutTrailingSpaces + replacement + extension).replace(reTrailingDotsAndSpaces, '');
+
+	return reWindowsReservedName.test(candidate)
+		? baseWithoutTrailingSpaces + '!' + extension
+		: candidate;
 }
 
 export default function filenamify(string, options = {}) {
@@ -88,8 +93,8 @@ export default function filenamify(string, options = {}) {
 	// so they get stripped rather than replaced
 	string = string.replace(reTrailingDotsAndSpaces, '');
 
-	string = string.replace(reRelativePath, replacement);
-	string = string.replace(filenameReservedRegex(), replacement);
+	string = string.replace(reRelativePath, () => replacement);
+	string = string.replace(filenameReservedRegex(), () => replacement);
 	string = string.replaceAll(reControlChars, char => isZeroWidthJoiner(char) ? char : replacement);
 
 	// Trim trailing spaces and periods again (in case replacement created new ones)
@@ -112,7 +117,7 @@ export default function filenamify(string, options = {}) {
 	string = string.replace(reTrailingDotsAndSpaces, '');
 
 	// Check for Windows reserved names after truncation and stripping
-	// Windows compatibility takes precedence over maxLength, so we add suffix even if it exceeds limit
+	// Windows compatibility takes precedence over maxLength, so the result may exceed it
 	string = ensureNonWindowsReservedName(string, replacement);
 
 	return string;

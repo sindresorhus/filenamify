@@ -54,6 +54,8 @@ String to use as replacement for reserved filename characters.
 
 Cannot contain: `<` `>` `:` `"` `/` `\` `|` `?` `*` or control characters.
 
+If the replacement would leave the result as a Windows reserved name, `!` is used instead.
+
 ##### maxLength
 
 Type: `number`\
@@ -62,6 +64,8 @@ Default: `100`
 Truncate the filename to the given length.
 
 Only the base of the filename is truncated, preserving the extension. If the extension itself is longer than `maxLength`, you will get a string that is longer than `maxLength`, so you need to check for that if you allow arbitrary extensions.
+
+The result may also exceed `maxLength` when a suffix is needed to avoid a Windows reserved name.
 
 Truncation is grapheme-aware and will not split Unicode characters (surrogate pairs or extended grapheme clusters). If the remaining budget (after accounting for the extension) is smaller than a whole grapheme, the base filename may be truncated to an empty string to avoid splitting.
 
